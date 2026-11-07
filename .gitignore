@@ -7,3 +7,4 @@ outputs/
 work/
 *.zip
 archive/pick-o-server/
+배포.bat
