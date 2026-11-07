@@ -7,6 +7,7 @@
   <meta name="description" content="여러 제작자의 작은 아이디어를 모은 토이 프로젝트 모음. 마음에 드는 프로젝트를 열고 직접 사용해 봐.">
   <title>toy. — 토이 프로젝트 모음</title>
   <link rel="stylesheet" href="index.css">
+  <script src="./catalog-filters.js" defer></script>
   <script src="./catalog.js" defer></script>
 <link rel="stylesheet" href="./shared/theme.css"><link rel="icon" href="./shared/favicon.svg" type="image/svg+xml"></head>
 <body data-project="home">
@@ -26,6 +27,11 @@
       </section>
       <section aria-labelledby="projects-title">
         <div class="section-heading"><h2 id="projects-title">프로젝트 <span id="projectCount" class="count">—</span></h2><span id="catalogSummary" class="section-note">작은 실험, 하나씩 쌓이는 중</span></div>
+        <div id="catalogTools" class="catalog-tools" hidden>
+          <div class="search-row"><div class="search-field"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><label class="sr-only" for="projectSearch">프로젝트 검색</label><input id="projectSearch" type="search" placeholder="제목, 설명, 제작자, 태그로 검색" autocomplete="off" aria-controls="projects" spellcheck="false"><button id="searchClear" class="search-clear" type="button" aria-label="검색어 지우기" hidden>×</button></div><button id="filterReset" class="filter-reset" type="button" hidden>필터 초기화</button></div>
+          <div id="categoryFilters" class="category-filters" role="group" aria-label="프로젝트 카테고리"></div>
+          <p id="resultSummary" class="result-summary" role="status" aria-live="polite" aria-atomic="true"></p>
+        </div>
         <div id="projects" class="grid" aria-label="토이 프로젝트 목록" aria-busy="true"></div>
         <p id="catalogMessage" class="catalog-message" role="status">프로젝트를 불러오는 중이야…</p>
         <button id="catalogRetry" class="catalog-retry" hidden>다시 불러오기</button>

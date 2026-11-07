@@ -8,7 +8,8 @@
       "description": "스위치를 눌러 논리 게이트 회로의 입력과 출력을 확인하는 실험실.",
       "author": "ggm",
       "tags": [],
-      "cover": "circuit"
+      "cover": "circuit",
+      "category": "회로 실습"
     },
     {
       "id": "ggm/prac_sequence.html",
@@ -17,7 +18,8 @@
       "description": "두 전원선 사이의 세로형 시퀀스 회로에서 푸시버튼, 릴레이, 자기유지와 인터록을 연습해 봐.",
       "author": "ggm",
       "tags": [],
-      "cover": "sequence"
+      "cover": "sequence",
+      "category": "회로 실습"
     },
     {
       "id": "ysb/pick_o.html",
@@ -29,7 +31,8 @@
         "번호 추출",
         "통계"
       ],
-      "cover": "lotto"
+      "cover": "lotto",
+      "category": "번호·통계"
     },
     {
       "id": "ysb/quiz.html",
@@ -38,7 +41,8 @@
       "description": "2~4변수의 입력으로 진리표와 카르노 맵을 채우고 논리식을 줄여 보는 퀴즈. 채점과 단계별 풀이를 확인할 수 있어.",
       "author": "ysb",
       "tags": [],
-      "cover": "grid"
+      "cover": "grid",
+      "category": "퀴즈"
     }
   ]
 }

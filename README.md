@@ -40,6 +40,7 @@ public/
 ```html
 <meta name="toy:title" content="카드에만 쓸 짧은 제목">
 <meta name="toy:tags" content="학습, 게임">
+<meta name="toy:category" content="학습">
 <meta name="toy:cover" content="code">
 <meta name="toy:hidden" content="true">
 ```
@@ -71,3 +72,10 @@ Cloudflare Workers Builds는 Wrangler의 custom build 설정만으로는 빌드�
 ## 공통 디자인
 
 PICK+O를 기준으로 모든 페이지의 디자인을 통일했다. 공통 CSS와 정적 앱 파일 구성은 [DESIGN.md](DESIGN.md)를 참고한다. 카드 표지는 code, grid, circuit, sequence 외에 lotto도 지원한다.
+
+
+## 검색과 카테고리
+
+메인 검색은 제목·설명·제작자·태그·카테고리를 함께 찾는다. 대소문자와 이름의 기호 차이(PICK+O / picko)를 구분하지 않고, 여러 단어를 입력하면 모두 포함하는 프로젝트를 찾는다. 카테고리와 검색을 함께 사용할 수 있으며 필터 초기화로 전체 목록에 돌아온다.
+
+카테고리는 HTML의 toy:category 메타데이터가 있으면 그 값을 사용한다. 없으면 기존 표지와 제목·설명을 기준으로 회로 실습, 퀴즈, 번호·통계, 게임, 도구, 기타로 자동 분류한다. 새 카테고리는 배포 시 목록에 자동으로 생긴다. 필터의 숫자는 전체 카탈로그 기준이며, 검색 결과 수는 별도로 표시한다.

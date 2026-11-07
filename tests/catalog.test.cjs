@@ -57,19 +57,20 @@ test('symlinked author folders are not scanned outside public', t => {
 });
 
 class Element {
-  constructor(tag = 'div') { this.tagName = tag; this.children = []; this.attrs = {}; this.events = {}; this.hidden = false; this.textContent = ''; this.innerHTML = ''; }
+  constructor(tag = 'div') { this.tagName = tag; this.children = []; this.attrs = {}; this.events = {}; this.hidden = false; this.textContent = ''; this.innerHTML = ''; this.value = ''; }
   append(...nodes) { this.children.push(...nodes); }
   replaceChildren(...nodes) { this.children = nodes; }
   setAttribute(key, value) { this.attrs[key] = value; }
   addEventListener(key, callback) { this.events[key] = callback; }
+  focus() { this.focused = true; }
 }
 async function homepage(responses) {
-  const nodes = Object.fromEntries(['projects', 'catalogMessage', 'projectCount', 'catalogSummary', 'catalogRetry'].map(id => [id, new Element()]));
+  const nodes = Object.fromEntries(['projects', 'catalogMessage', 'projectCount', 'catalogSummary', 'catalogRetry', 'catalogTools', 'projectSearch', 'searchClear', 'filterReset', 'categoryFilters', 'resultSummary'].map(id => [id, new Element()]));
   const context = { document: { getElementById: id => nodes[id], createElement: tag => new Element(tag) }, fetch: async () => {
     const response = responses.shift(); if (response instanceof Error) throw response;
     return { ok: true, json: async () => response };
   } };
-  vm.createContext(context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../public/catalog.js'), 'utf8'), context);
+  vm.createContext(context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../public/catalog-filters.js'), 'utf8'), context); vm.runInContext(fs.readFileSync(path.join(__dirname, '../public/catalog.js'), 'utf8'), context);
   await new Promise(setImmediate); return nodes;
 }
 function project(overrides = {}) { return { id: 'alice/new.html', url: '/alice/new', title: '새 프로젝트', description: '소개', author: 'alice', tags: [], cover: 'code', ...overrides }; }
@@ -95,6 +96,17 @@ test('homepage handles empty catalogs, failures, retries and unsafe URL schemes'
     const nodes = await homepage([{ version: 1, projects: [project({ url })] }]);
     assert.equal(nodes.projects.children.length, 0); assert.equal(nodes.catalogRetry.hidden, false);
   }
+});
+
+test('homepage search, category buttons, result counts, clear and reset work together', async () => {
+  const nodes=await homepage([{version:1,projects:[project({title:'회로 실험실',cover:'circuit'}),project({title:'시퀀스 실험실',author:'bob',cover:'sequence'}),project({title:'PICK+O',description:'로또 번호',cover:'lotto'})]}]);
+  assert.equal(nodes.projects.children.length,3);assert.equal(nodes.catalogTools.hidden,false);
+  nodes.projectSearch.value='ALICE';nodes.projectSearch.events.input();assert.equal(nodes.projects.children.length,2);assert.equal(nodes.searchClear.hidden,false);
+  const circuit=nodes.categoryFilters.children.find(b=>b.children[0].textContent==='회로 실습');circuit.events.click();assert.equal(nodes.projects.children.length,1);assert.equal(circuit.attrs['aria-pressed'],'true');assert.equal(nodes.projectCount.textContent,'03');assert.equal(nodes.resultSummary.textContent,'전체 3개 중 1개 · 회로 실습');
+  nodes.projectSearch.value='로또';nodes.projectSearch.events.input();assert.equal(nodes.projects.children.length,0);assert.equal(nodes.catalogMessage.hidden,false);assert.equal(nodes.filterReset.hidden,false);
+  nodes.searchClear.events.click();assert.equal(nodes.projects.children.length,2);assert.equal(circuit.attrs['aria-pressed'],'true');assert(nodes.projectSearch.focused);
+  nodes.filterReset.events.click();assert.equal(nodes.projects.children.length,3);assert.equal(nodes.filterReset.hidden,true);assert.equal(nodes.searchClear.hidden,true);
+  nodes.projectSearch.value='없는 검색어';nodes.projectSearch.events.input();nodes.projectSearch.events.keydown({key:'Escape',preventDefault(){}});assert.equal(nodes.projectSearch.value,'');assert.equal(nodes.projects.children.length,3);
 });
 
 test('current author directories, project files and deployment hook stay connected', () => {

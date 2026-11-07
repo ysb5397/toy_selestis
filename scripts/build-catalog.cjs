@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { categoryOf } = require('../public/catalog-filters.js');
 
 const IGNORED_DIRS = new Set(['node_modules', 'assets', 'vendor']);
 const ENTITIES = { amp: '&', quot: '"', apos: "'", lt: '<', gt: '>', nbsp: ' ', copy: '©' };
@@ -38,7 +39,7 @@ function metadata(html, relative) {
   const parts = relative.split('/');
   const encoded = parts.map(encodeURIComponent).join('/');
   const url = '/' + (encoded.endsWith('/index.html') ? encoded.slice(0, -10) : encoded.endsWith('.html') ? encoded.slice(0, -5) : encoded);
-  return { id: relative, url, title: title.replace(/\s*[·|]\s*toy\.\s*$/i, ''), description, author: parts.length > 1 ? parts[0] : '공용', tags, cover };
+  return { id: relative, url, title: title.replace(/\s*[·|]\s*toy\.\s*$/i, ''), description, author: parts.length > 1 ? parts[0] : '공용', tags, cover, category: categoryOf({category:meta['toy:category'],title,description,cover}) };
 }
 function collect(publicDir) {
   const entries = [];
