@@ -12,8 +12,8 @@ public/
     prac_sequence.html        # /ggm/prac_sequence · 제작자 ggm
     sequence.css
     sequence-app.js
-  ysb/
-    quiz.html                 # /ysb/quiz · 제작자 ysb
+  ysb5397/
+    quiz.html                 # /ysb5397/quiz · 제작자 ysb5397
 ```
 
 ## 프로젝트 추가
@@ -95,3 +95,9 @@ PICK+O를 기준으로 모든 페이지의 디자인을 통일했다. 공통 CSS
 ```
 
 모달은 초기화 후 메인으로 이동한다고 미리 안내한다. 새 페이지는 저장 형식 버전 불일치 또는 복원 불가능한 데이터를 발견하면 해당 프로젝트의 진행 상태만 지우고 /로 이동해 안내한다. 페이지가 삭제된 경우에도 업데이트 모달에서 메인으로 이동한다. 새 프로젝트의 상태 저장은 ToyRuntime.register({capture, restore})로 연결한다. capture는 JSON으로 저장 가능한 데이터만 반환하고 restore는 검증 후 화면을 다시 그린다. 데이터 변환이 필요한 변경은 restore에 변환 로직을 추가하고 동일 형식 버전을 유지하거나 별도 마이그레이션을 설계한다.
+
+## 제작자 카드 애니메이션
+
+ysb5397 제작자의 PICK+O 번호 공과 카르노 맵 칸에 anime.js 4.5.0을 적용한다. 850ms 전진 → 850ms 복귀 → 1000ms 대기를 반복하고 호버 해제 시 220ms 동안 원상 복귀한다. 다른 제작자의 카드는 기존 표시를 유지한다. 모션 감소 설정 및 터치 입력에서는 반복을 실행하지 않는다. 필터로 카드를 제거하거나 탭을 숨기면 반복을 정리한다. anime.js 배포 파일과 MIT 라이선스는 public/shared/vendor에 포함한다.
+
+제작자 폴더는 ysb5397이다. 이전 /ysb/quiz와 /ysb/pick_o는 같은 출처의 새 주소로 연결하고, 기존 localStorage 진행 상태를 새 경로로 한 번 가져온다.

@@ -48,12 +48,14 @@
     bottom.append(element('span', 'open', '프로젝트 열기'), arrow);
     body.append(bottom);
     link.append(cover, body);
+    globalThis.CardMotion?.mount(link, project);
     return link;
   }
   function renderResults() {
     if (!loaded) return;
     const query = search.value || '';
     const matches = filters.filter(projects, { query, category: selectedCategory });
+    globalThis.CardMotion?.stopAll();
     grid.replaceChildren(...matches.map(project => projectCards.get(project)));
     clear.hidden = !query;
     reset.hidden = !query && !selectedCategory;

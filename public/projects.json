@@ -22,11 +22,11 @@
       "category": "회로 실습"
     },
     {
-      "id": "ysb/pick_o.html",
-      "url": "/ysb/pick_o",
+      "id": "ysb5397/pick_o.html",
+      "url": "/ysb5397/pick_o",
       "title": "PICK+O",
       "description": "로또 6/45와 연금복권 720+ 듀얼 트랙 · PICK+O",
-      "author": "ysb",
+      "author": "ysb5397",
       "tags": [
         "번호 추출",
         "통계"
@@ -35,11 +35,11 @@
       "category": "번호·통계"
     },
     {
-      "id": "ysb/quiz.html",
-      "url": "/ysb/quiz",
+      "id": "ysb5397/quiz.html",
+      "url": "/ysb5397/quiz",
       "title": "카르노 랩 — 진리표와 논리식 퀴즈",
       "description": "2~4변수의 입력으로 진리표와 카르노 맵을 채우고 논리식을 줄여 보는 퀴즈. 채점과 단계별 풀이를 확인할 수 있어.",
-      "author": "ysb",
+      "author": "ysb5397",
       "tags": [],
       "cover": "grid",
       "category": "퀴즈"

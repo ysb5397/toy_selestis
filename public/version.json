@@ -1,5 +1,5 @@
 {
-  "release": "034140a4e72b74322b65",
+  "release": "e3fa40853e0e282c95c0",
   "pages": {
     "/ggm/prac_circuit": {
       "schema": 1
@@ -10,10 +10,10 @@
     "/": {
       "schema": 1
     },
-    "/ysb/pick_o": {
+    "/ysb5397/pick_o": {
       "schema": 1
     },
-    "/ysb/quiz": {
+    "/ysb5397/quiz": {
       "schema": 1
     }
   }

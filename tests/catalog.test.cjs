@@ -112,7 +112,7 @@ test('homepage search, category buttons, result counts, clear and reset work tog
 test('current author directories, project files and deployment hook stay connected', () => {
   const root = path.resolve(__dirname, '../public'), projects = collect(root);
   assert(projects.some(p => p.author === 'ggm' && p.url === '/ggm/prac_circuit'));
-  assert(projects.some(p => p.author === 'ysb' && p.url === '/ysb/quiz'));
+  assert(projects.some(p => p.author === 'ysb5397' && p.url === '/ysb5397/quiz'));
   for (const p of projects) assert(fs.existsSync(path.join(root, p.id)));
   const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../wrangler.jsonc'), 'utf8'));
   assert.equal(config.build.command, 'node scripts/build-catalog.cjs');

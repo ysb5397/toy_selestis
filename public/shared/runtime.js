@@ -24,6 +24,10 @@
   }
   async function register(next) {
     adapter = next;
+    // Preserve progress when the author directory is renamed.
+    if(route.startsWith('/ysb5397/')){
+      try{const legacy='toy:progress:'+route.replace('/ysb5397/','/ysb/');if(!localStorage.getItem(key)&&localStorage.getItem(legacy)){localStorage.setItem(key,localStorage.getItem(legacy));localStorage.removeItem(legacy);}}catch{}
+    }
     const previous = read();
     if (previous && previous.schema !== schema) { resetToHome(); return; }
     try { if (previous) await adapter.restore(previous.data); }
