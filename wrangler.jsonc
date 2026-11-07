@@ -1,0 +1,11 @@
+{
+  "name": "toy",
+  "compatibility_date": "2026-11-04",
+  "build": {
+    "command": "node scripts/build-catalog.cjs",
+    "watch_dir": "public"
+  },
+  "assets": {
+    "directory": "./public"
+  }
+}

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PICK+O</title>
+  <meta name="description" content="로또 6/45와 연금복권 720+ 듀얼 트랙 · PICK+O" />
+<link rel="stylesheet" href="pick_o.css"/>
+<script src="pick_o.js" defer></script>
+<link rel="stylesheet" href="../shared/theme.css"><link rel="icon" href="../shared/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0b0b0c"><meta name="toy:cover" content="lotto"><meta name="toy:tags" content="번호 추출, 통계"></head>
+<body data-project="picko">
+  <div class="app"><a class="picko-home-link" href="/">← 프로젝트 목록</a>
+    <header class="top">
+      <div class="top-row">
+        <a class="logo" href="pick_o" aria-label="PICK+O 홈">PICK<span>+</span>O</a>
+        <button class="btn-refresh" id="btn-refresh-data" type="button" title="최신 데이터 새로고침">
+          <svg class="refresh-icon" viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+          <span class="refresh-text">데이터 새로고침</span>
+        </button>
+      </div>
+      <nav class="tabs">
+        <button class="active" data-view="home" type="button">뽑기</button>
+        <button data-view="lab" type="button">통계</button>
+        <button data-view="method" type="button">방법</button>
+      </nav>
+    </header>
+
+    <section class="view on" data-view="home">
+      <div class="mode" style="margin-bottom: 16px;">
+        <button class="active" data-mode="all" type="button">전체</button>
+        <button data-mode="lotto" type="button">로또 6/45</button>
+        <button data-mode="pension" type="button">연금복권 720+</button>
+      </div>
+
+      <div class="last lotto645">
+        <div class="meta" id="last-meta"><b>1239회</b><span>2026.08.29</span></div>
+        <div class="balls" id="last-balls">
+          <span class="ball b2">11</span>
+          <span class="ball b2">13</span>
+          <span class="ball b3">22</span>
+          <span class="ball b4">32</span>
+          <span class="ball b4">33</span>
+          <span class="ball b4">36</span>
+          <span class="plus">+</span>
+          <span class="ball b1 bonus">8</span>
+        </div>
+      </div>
+
+      <div class="last pension720">
+        <div class="meta" id="last-pension-meta"><b>330회</b><span>2026.08.29</span></div>
+        <div class="pension-row">
+          <div class="group" id="last-pension-group">
+            <span class="group-ball team">3</span>
+            <span class="group-label">조</span>
+          </div>
+          <div class="group-balls" id="last-pension-balls">
+            <span class="group-ball b1">1</span>
+            <span class="group-ball b2">0</span>
+            <span class="group-ball b3">7</span>
+            <span class="group-ball b4">2</span>
+            <span class="group-ball b5">3</span>
+            <span class="group-ball b6">4</span>
+          </div>
+        </div>
+      </div>
+
+      <p id="data-note" class="data-note" role="status">함께 저장된 추첨 데이터를 불러오는 중이야.</p>
+      <div class="actions">
+        <button class="ghost" id="btn-a" type="button">기본 조합 추출</button>
+        <button class="ghost" id="btn-b" type="button">통계 제외 조합 추출</button>
+        <button class="primary" id="btn-both" type="button">두 방식 함께 추출</button>
+      </div>
+      <div class="stepper">
+        시뮬레이션 횟수 선택
+        <button data-n="1" type="button">1회</button>
+        <button data-n="10" type="button">10회</button>
+        <button data-n="100" type="button">100회</button>
+        <button data-n="1000" class="on" type="button">1천</button>
+        <button data-n="10000" type="button">1만</button>
+        <button data-n="100000" type="button">10만</button>
+        <button data-n="1000000" type="button">100만</button>
+      </div>
+
+      <!-- 수동 번호 정밀 분석기 섹션 -->
+      <div class="custom-analyzer-card" id="custom-analyzer-card">
+        <div class="analyzer-header">
+          <div class="analyzer-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>내 번호 정밀 통계 분석</span>
+          </div>
+          <p class="analyzer-sub">원하는 번호를 직접 입력하면 최신 수학 엔진(정석 통계 vs 과밀 억제)으로 다각도 분석해드려요.</p>
+        </div>
+
+        <div class="analyzer-input-group">
+          <!-- 로또 6/45 입력창 -->
+          <div class="analyzer-input-box" id="analyzer-lotto-box">
+            <div class="input-label-row">
+              <label for="input-lotto-nums">로또 6/45 번호</label>
+              <span class="label-badge">1~45 중 6개</span>
+            </div>
+            <div class="input-row">
+              <input type="text" id="input-lotto-nums" placeholder="예: 7, 12, 19, 23, 34, 42" autocomplete="off" />
+              <button class="btn-analyze" id="btn-analyze-lotto" type="button">분석</button>
+            </div>
+            <div class="input-hint">공백이나 쉼표로 6개 숫자를 구분해 입력하세요.</div>
+          </div>
+
+          <!-- 연금복권 720+ 입력창 -->
+          <div class="analyzer-input-box" id="analyzer-pension-box">
+            <div class="input-label-row">
+              <label for="input-pension-nums">연금복권 720+ 번호</label>
+              <span class="label-badge">6자리 숫자</span>
+            </div>
+            <div class="input-row">
+              <input type="text" id="input-pension-nums" placeholder="예: 708192 (조 생략)" maxlength="6" autocomplete="off" />
+              <button class="btn-analyze" id="btn-analyze-pension" type="button">분석</button>
+            </div>
+            <div class="input-hint">조 구분 없이 6자리 숫자만 입력하세요 (한정 수량 순열 분석).</div>
+          </div>
+        </div>
+
+        <!-- 분석 결과 컨테이너 -->
+        <div class="analyzer-result" id="analyzer-result" style="display: none;"></div>
+      </div>
+
+      <p class="notice">주의사항 <br>
+                        1. 로또 6/45, 연금복권720+ 등 동행복권은 만 19세 이상 구매하거나 당첨금을 수령할 수 있어요. <br>
+                        2. 또한 이 곳은 단순 통계를 이용한 몬테카를로 시뮬레이션 기반 추천 번호를 제공하며 당첨을 보장하지 않아요. <br>
+                        3. 표시하는 적합도는 조합의 필터 일치도이며 당첨 확률이 아니에요.</p>
+    </section>
+
+    <!-- 대량 시뮬레이션 하이테크 로딩 모달 (Anime.js Powered) -->
+    <div class="simulation-modal" id="simulation-modal">
+      <div class="sim-card">
+        <div class="sim-header">
+          <div class="sim-badge"><span class="pulse-dot"></span> 30-ROUND CONVERGENCE ENGINE</div>
+          <h3>다중 수렴 연산 & 번호 겹침 압축</h3>
+          <p class="sim-sub" id="sim-stage-text">30회차 정밀 수렴 연산 준비 중...</p>
+        </div>
+
+        <!-- Anime.js 인터랙티브 수렴 궤도 비주얼 -->
+        <div class="sim-visual-wrap" id="sim-visual-wrap">
+          <div class="sim-radar-ring ring-1"></div>
+          <div class="sim-radar-ring ring-2"></div>
+          <div class="sim-radar-sweep"></div>
+          <div class="sim-core-node">
+            <span class="core-glow"></span>
+            <span class="core-text">CORE</span>
+          </div>
+          <!-- 궤도를 공전하는 애니메이션 공들 -->
+          <div class="orbit-container">
+            <div class="orbit-ball ob-1" data-val="?">?</div>
+            <div class="orbit-ball ob-2" data-val="?">?</div>
+            <div class="orbit-ball ob-3" data-val="?">?</div>
+            <div class="orbit-ball ob-4" data-val="?">?</div>
+            <div class="orbit-ball ob-5" data-val="?">?</div>
+            <div class="orbit-ball ob-6" data-val="?">?</div>
+          </div>
+        </div>
+
+        <div class="sim-body">
+          <div class="sim-counter-box">
+            <div class="sim-count" id="sim-count-display">0</div>
+            <div class="sim-total" id="sim-total-display">/ 30,000,000 회 연산 완료</div>
+          </div>
+
+          <div class="sim-progress-track">
+            <div class="sim-progress-fill" id="sim-progress-fill" style="width: 0%;"></div>
+            <div class="sim-glow-pin" id="sim-glow-pin"></div>
+          </div>
+
+          <div class="sim-metrics">
+            <div class="metric-item">
+              <span class="m-label">연산 속도</span>
+              <span class="m-val" id="sim-speed">0 ops/s</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-label">최고 적합도</span>
+              <span class="m-val highlight" id="sim-best-fit">--%</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-label">수렴 집중도</span>
+              <span class="m-val highlight-cyan" id="sim-convergence">0%</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-label">후보 풀</span>
+              <span class="m-val" id="sim-top-count">0/150개</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-footer">
+          <div class="sim-balls-anim" id="sim-footer-balls">
+            <span class="sim-ball b1"></span>
+            <span class="sim-ball b2"></span>
+            <span class="sim-ball b3"></span>
+            <span class="sim-ball b4"></span>
+            <span class="sim-ball b5"></span>
+          </div>
+          <div class="sim-hint">독립 30회차 연산으로 150개 정예 후보를 도출한 후, 가장 많이 겹치는 핵심 번호군을 집중 선별해 5개 조합으로 압축합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <section class="view" data-view="result">
+      <div class="result-head">
+        <div>
+          <div class="eyebrow" id="result-kicker">결과</div>
+          <h2 id="result-title">듀얼 트랙</h2>
+        </div>
+        <button id="btn-again" type="button">다시</button>
+      </div>
+      <div class="computing" id="computing">
+        <div class="spinner"></div>
+        <div id="computing-text">PICK+O가 저장된 데이터로 조합을 계산하고 있어.</div>
+      </div>
+      <div class="result-grid" id="result-grid"></div>
+    </section>
+
+    <section class="view" data-view="lab">
+      <h2 class="page-title">통계</h2>
+      <div id="lab-root"></div>
+    </section>
+
+    <section class="view" data-view="method">
+      <h2 class="page-title">방법</h2>
+      <div class="method">
+        <article>
+          <div class="kicker">모드</div>
+          <h3>로또 / 연금</h3>
+          <p>로또 6/45는 1–45 중 중복 없는 6개. 연금복권 720+는 조(1–5)와 0–9 여섯 자리를 독립으로 뽑고, 숫자 중복을 허용해요.</p>
+        </article>
+        <article>
+          <div class="kicker">파레토 · 큰 수의 법칙</div>
+          <h3>20 / 80, 공백</h3>
+          <p>출현 상위 20%는 재등장 쪽으로, 하위 80%는 장기 미출현 쪽으로 가중치를 기울여요.</p>
+        </article>
+        <article>
+          <div class="kicker">베이즈</div>
+          <h3>동반 출현</h3>
+          <p>A가 나온 회차에서 B가 함께 나온 비율을 사후 가중치로 써요.</p>
+        </article>
+        <article>
+          <div class="kicker">최빈 집단</div>
+          <h3>과열만 묶기</h3>
+          <p>최근 30회에서 과열된 번호만 묶어 통계 제외 추첨의 기준으로 써요.</p>
+        </article>
+        <article>
+          <div class="kicker">트랙</div>
+          <h3>기본 포함, 통계 제외</h3>
+          <p>기본 추첨은 전체 모수에 필터만 적용하고, 통계 제외 추첨은 최빈 집단을 뺀 뒤 가중치를 다시 나눠요.</p>
+        </article>
+        <article>
+          <div class="kicker">분석</div>
+          <h3>통계만 전달</h3>
+          <p>적합도는 필터 일치도이며 1등 확률을 예측하지 않아요.</p>
+        </article>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

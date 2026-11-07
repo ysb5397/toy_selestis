@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0c">
+  <meta name="description" content="여러 제작자의 작은 아이디어를 모은 토이 프로젝트 모음. 마음에 드는 프로젝트를 열고 직접 사용해 봐.">
+  <title>toy. — 토이 프로젝트 모음</title>
+  <link rel="stylesheet" href="index.css">
+  <script src="./catalog.js" defer></script>
+<link rel="stylesheet" href="./shared/theme.css"><link rel="icon" href="./shared/favicon.svg" type="image/svg+xml"></head>
+<body data-project="home">
+  <div class="wrap">
+    <header>
+      <a class="logo" href="/" aria-label="toy. 홈">toy<span>.</span></a>
+      <span class="header-note">SMALL PROJECTS, LITTLE JOYS</span>
+    </header>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <p class="eyebrow">작은 아이디어를 하나씩</p>
+          <h1 id="hero-title">만들어 보고,<br>가볍게 즐기는 공간.</h1>
+          <p class="intro">궁금해서 만들어 본 작은 프로젝트들을 모았어.<br>마음에 드는 카드를 열고, 직접 사용해 봐!</p>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="tile a">&lt;/&gt;</div><div class="tile b">01</div><span class="spark">✳</span></div>
+      </section>
+      <section aria-labelledby="projects-title">
+        <div class="section-heading"><h2 id="projects-title">프로젝트 <span id="projectCount" class="count">—</span></h2><span id="catalogSummary" class="section-note">작은 실험, 하나씩 쌓이는 중</span></div>
+        <div id="projects" class="grid" aria-label="토이 프로젝트 목록" aria-busy="true"></div>
+        <p id="catalogMessage" class="catalog-message" role="status">프로젝트를 불러오는 중이야…</p>
+        <button id="catalogRetry" class="catalog-retry" hidden>다시 불러오기</button>
+        <noscript><p class="catalog-message">프로젝트 목록을 보려면 브라우저에서 자바스크립트를 켜 줘.</p></noscript>
+        <p class="footnote">여러 사람이 만든 작은 아이디어들. 마음에 드는 프로젝트를 열어 봐.</p>
+      </section>
+    </main>
+    <footer><a class="logo" href="/" aria-label="toy. 홈">toy<span>.</span></a><span>작게 시작해도, 재미있으면 충분하니까.</span></footer>
+  </div>
+</body>
+</html>

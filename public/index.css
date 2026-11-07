@@ -1,0 +1,49 @@
+
+    :root { color-scheme: light; --bg:#f4f5f0; --ink:#243e35; --muted:#728078; --line:#dfe5da; --green:#284f3b; --lime:#c3e883; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI","Malgun Gothic",sans-serif; -webkit-font-smoothing:antialiased; }
+    a { color:inherit; text-decoration:none; }
+    a:focus-visible { outline:3px solid #709b4b; outline-offset:6px; }
+    .wrap { max-width:1120px; padding:0 32px; margin:auto; }
+    header { height:88px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); }
+    .logo { font-size:30px; font-weight:800; letter-spacing:-1.8px; }
+    .logo span { color:#82a553; }
+    .header-note { font-size:11px; letter-spacing:1.7px; color:var(--muted); }
+    .hero { position:relative; padding:76px 0 64px; display:flex; align-items:center; justify-content:space-between; gap:40px; }
+    .eyebrow { font-size:11px; font-weight:700; letter-spacing:2px; color:#7a8e6c; margin:0 0 21px; }
+    h1 { font-size:clamp(34px,4.5vw,52px); font-weight:750; line-height:1.35; letter-spacing:-2px; margin:0 0 22px; }
+    .intro { color:var(--muted); font-size:14px; line-height:1.9; margin:0; }
+    .hero-art { width:215px; height:190px; position:relative; flex-shrink:0; margin:0 32px; }
+    .tile { position:absolute; display:grid; place-items:center; border:1px solid #d5dfc9; border-radius:22px; width:112px; height:112px; font-family:monospace; font-size:29px; box-shadow:0 10px 24px #24402c08; }
+    .tile.a { background:#e7eddc; top:0; right:5px; transform:rotate(12deg); color:#769158; }
+    .tile.b { background:var(--green); color:var(--lime); left:0; bottom:0; transform:rotate(-10deg); border-color:var(--green); }
+    .spark { position:absolute; bottom:14px; right:1px; font-size:40px; color:#91af6b; }
+    .section-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:19px; border-bottom:1px solid var(--line); margin-bottom:26px; }
+    h2 { font-size:18px; margin:0; letter-spacing:-.5px; }
+    .count { color:var(--muted); font-size:12px; font-weight:400; margin-left:9px; }
+    .section-note { color:var(--muted); font-size:11px; }
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
+    .project { display:flex; flex-direction:column; background:white; border:1px solid var(--line); border-radius:17px; overflow:hidden; transition:transform .2s,box-shadow .2s,border-color .2s; }
+    .project:hover { transform:translateY(-5px); box-shadow:0 14px 32px #243e3510; border-color:#a6bf8d; }
+    .cover { position:relative; min-height:208px; background:#e7eddc; padding:23px; overflow:hidden; }
+    .cover-label { font-size:10px; font-weight:700; color:#70855d; letter-spacing:1.6px; }
+    .map { position:relative; display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:repeat(2,47px); gap:3px; width:228px; max-width:100%; margin:24px auto 5px; transform:rotate(-5deg); }
+    .map span { display:grid; place-items:center; background:#f7f9f2; border-radius:5px; font:20px ui-monospace,monospace; color:#a2ad97; }
+    .map span:nth-child(4n+1),.map span:nth-child(4n+2) { background:#cde4af; color:#456336; }
+    .map:after { content:""; position:absolute; top:-5px; bottom:-5px; left:-5px; width:calc(50% + 4px); border:2px solid #7c9e56; border-radius:17px; }
+    .project-body { padding:24px; flex:1; display:flex; flex-direction:column; }
+    .tags { display:flex; gap:6px; margin-bottom:13px; }
+    .tag { border-radius:5px; background:#eff4e8; color:#6a8055; padding:5px 7px; font-size:10px; }
+    h3 { font-size:21px; margin:0 0 12px; letter-spacing:-.7px; }
+    .description { color:var(--muted); font-size:12px; line-height:1.9; margin:0 0 24px; }
+    .card-bottom { border-top:1px solid #edf0e8; padding-top:17px; display:flex; align-items:center; justify-content:space-between; margin-top:auto; }
+    .open { font-size:12px; font-weight:700; }
+    .arrow { width:30px; height:30px; border-radius:50%; background:var(--green); color:var(--lime); display:grid; place-items:center; }
+    .footnote { font-size:12px; color:#8c9983; margin:27px 0 0; line-height:1.7; }
+    footer { display:flex; justify-content:space-between; align-items:center; gap:15px; border-top:1px solid var(--line); margin-top:90px; padding:27px 0 32px; color:#8c9983; font-size:10px; letter-spacing:.5px; }
+    footer .logo { font-size:22px; }
+    @media (prefers-reduced-motion:reduce) { .project { transition:none; } .project:hover { transform:none; } }
+    @media (max-width:950px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .hero-art { margin-right:0; } }
+    @media (max-width:600px) { .wrap { padding:0 21px; } header { height:72px; } .header-note { font-size:9px; letter-spacing:1px; } .hero { padding:47px 0 39px; } .hero-art { display:none; } .eyebrow { font-size:10px; margin-bottom:17px; } h1 { letter-spacing:-1.5px; } .intro { font-size:13px; } .grid { grid-template-columns:1fr; } .cover { min-height:213px; } .section-note { display:none; } .project-body { padding:23px; } footer { margin-top:59px; } }
+      .author{display:flex;align-items:center;gap:7px;margin:auto 0 19px;font-size:11px;color:#87967d}.author-avatar{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#edf3e4;color:#6f885a;font-size:11px;font-weight:700}.author-name{color:#4f6d42;font-weight:650;overflow-wrap:anywhere}.description{flex:1}.cover-circuit{background:#e1e9df}.cover-sequence{background:#e8ede3}.cover-code{background:#e3eadf}.cover-svg{display:block;margin:13px auto 0}.code-cover{display:flex;align-items:center;justify-content:center;gap:19px;font:58px ui-monospace,monospace;color:#8fa477;padding:26px 0 0}.code-cover span:nth-child(2){color:#b4ca8e;transform:rotate(12deg)}.catalog-message{color:#7c8d70;font-size:13px;line-height:1.9;padding:20px 0}.catalog-retry{min-height:42px;border:1px solid #cad8bd;border-radius:8px;background:#e6efda;color:#4a6a39;padding:10px 17px;cursor:pointer;font:inherit}.project h3{overflow-wrap:anywhere;font-size:19px;line-height:1.5}.tag{font-size:11px}.cover-label{font-size:11px}[hidden]{display:none!important}
+  
