@@ -2885,6 +2885,22 @@ window.PICKO = window.PICKO || {};
   async function boot() {
     await loadData(false);
     setView("home");
+    window.ToyRuntime?.register({
+      capture:()=>({mode:state.mode,view:state.view,games:state.games,result:state.result,consensus:Object.fromEntries(Object.entries(state.result||{}).filter(([,v])=>Array.isArray(v)&&v.consensus).map(([k,v])=>[k,v.consensus])),labTab:exports.views.getLabTab(),drafts:Object.fromEntries(['input-lotto-nums','input-pension-nums'].map(id=>[id,document.getElementById(id)?.value||''])),analyzedHistory}),
+      restore:s=>{
+        if(!['all','lotto','pension'].includes(s.mode)||!['home','lab','result','method'].includes(s.view)||!Number.isFinite(s.games))throw Error('Invalid PICK+O state');
+        state.games=s.games;setMode(s.mode);state.result=s.result||null;
+        for(const [k,v] of Object.entries(s.consensus||{}))if(Array.isArray(state.result?.[k]))state.result[k].consensus=v;
+        if(['lotto','pension'].includes(s.labTab))setLabTab(s.labTab);
+        if(Array.isArray(s.analyzedHistory))analyzedHistory.splice(0,analyzedHistory.length,...s.analyzedHistory.slice(-100));
+        if(s.view==='lab')renderLab(state);
+        if(s.view==='result'&&state.result)exports.views.renderResult(state);
+        setView(s.view==='result'&&!state.result?'home':s.view);
+        for(const id of ['input-lotto-nums','input-pension-nums'])if(typeof s.drafts?.[id]==='string')document.getElementById(id).value=s.drafts[id];
+        if(s.view==='result'&&state.result){const r=state.result;const countL=(r.lottoA?.length||0)+(r.lottoB?.length||0),countP=(r.pensionA?.length||0)+(r.pensionB?.length||0);$('#result-kicker').textContent=[countL?'로또 '+countL+'개':'',countP?'연금 '+countP+'개':''].filter(Boolean).join(' · ');$('#result-title').textContent=r.which==='A'?'기본 조합 추출 결과':r.which==='B'?'통계 제외 조합 추출 결과':'두 방식의 조합 추출 결과';}
+        $$("button[data-n]").forEach(b=>b.classList.toggle('on',Number(b.dataset.n)===state.games));
+      }
+    });
   }
 
   boot();

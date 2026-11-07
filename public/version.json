@@ -1,0 +1,20 @@
+{
+  "release": "034140a4e72b74322b65",
+  "pages": {
+    "/ggm/prac_circuit": {
+      "schema": 1
+    },
+    "/ggm/prac_sequence": {
+      "schema": 1
+    },
+    "/": {
+      "schema": 1
+    },
+    "/ysb/pick_o": {
+      "schema": 1
+    },
+    "/ysb/quiz": {
+      "schema": 1
+    }
+  }
+}

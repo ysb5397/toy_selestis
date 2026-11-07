@@ -119,5 +119,9 @@
   clear.addEventListener('click', () => { search.value = ''; renderResults(); search.focus(); });
   reset.addEventListener('click', () => { search.value = ''; selectedCategory = ''; renderResults(); search.focus(); });
   retry.addEventListener('click', load);
+  globalThis.ToyRuntime?.register({
+    capture:()=>({query:search.value,category:selectedCategory}),
+    restore:data=>{if(typeof data.query!=='string'||typeof data.category!=='string')throw Error('Invalid filters');search.value=data.query;selectedCategory=data.category;}
+  });
   load();
 })();

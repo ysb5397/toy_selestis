@@ -79,3 +79,14 @@ $('reveal').onclick=()=>{
  $('fill').onclick=()=>{truth=truth.map((_,m)=>Number(ms.includes(m)));map=[...truth];graded=false;render();};render();$('solution').scrollIntoView({behavior:'smooth',block:'nearest'});
 };
 updateStats();start([0,2,5,7]);
+window.ToyRuntime?.register({
+ capture:()=>({n,ms,truth,map,count,revealed,graded,activeGroup,recorded:!!start.recorded,canonical:$('canonical').value,minimal:$('minimal').value,custom:$('custom').value,help:!$('help').hidden}),
+ restore:s=>{
+  if(![2,3,4].includes(s.n)||!Array.isArray(s.ms)||!s.ms.every(m=>Number.isInteger(m)&&m>=0&&m<2**s.n)||![s.truth,s.map].every(a=>Array.isArray(a)&&a.length===2**s.n&&a.every(v=>v===null||v===0||v===1))||typeof s.canonical!=='string'||typeof s.minimal!=='string')throw Error('Invalid quiz');
+  $('variables').value=s.n;count=Math.max(0,(s.count||1)-1);start(s.ms);truth=s.truth;map=s.map;
+  $('canonical').value=s.canonical;$('minimal').value=s.minimal;preview();
+  start.recorded=true;if(s.revealed)$('reveal').click();if(s.graded)$('check').click();
+  start.recorded=!!s.recorded;activeGroup=Number.isInteger(s.activeGroup)?s.activeGroup:-1;
+  if(typeof s.custom==='string')$('custom').value=s.custom;$('help').hidden=!s.help;$('helpToggle').setAttribute('aria-expanded',String(!!s.help));render();
+ }
+});

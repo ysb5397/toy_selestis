@@ -62,6 +62,7 @@ function build(publicDir) {
   const destination = path.join(publicDir, 'projects.json');
   const json = JSON.stringify(catalog, null, 2) + '\n';
   if (!fs.existsSync(destination) || fs.readFileSync(destination, 'utf8') !== json) fs.writeFileSync(destination, json);
+  require("./build-version.cjs").buildVersion(publicDir);
   return catalog;
 }
 if (require.main === module) {

@@ -36,4 +36,16 @@ window.addEventListener('DOMContentLoaded',()=>{
  $('power').onclick=()=>{power=!power;update(`회로 전원 ${power?'ON':'OFF'}`);};$('reset').onclick=setup;$('clearLog').onclick=()=>{logs=[];paintLog();};
  window.addEventListener('blur',()=>{if(!$('latchMode').checked)releaseAll();});document.addEventListener('visibilitychange',()=>{if(document.hidden&&!$('latchMode').checked)releaseAll();});
  $('download').onclick=()=>{const blob=new Blob([K.render(circuit,result,{labels:$('labels').checked})],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='sequence-'+circuit.id+'.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};setup();
+ window.ToyRuntime?.register({
+  capture:()=>({preset:circuit.id,load:$('load').value,seriesType:$('seriesType').value,parallelType:$('parallelType').value,labels:$('labels').checked,latchMode:$('latchMode').checked,power,externals,state:result.state,logs}),
+  restore:s=>{
+   if(!K.presets.some(p=>p.id===s.preset)||!s.state||!s.externals)throw Error('Invalid sequence');
+   for(const id of ['preset','load','seriesType','parallelType']){if(![...$(id).options].some(o=>o.value===s[id]))throw Error('Invalid option');$(id).value=s[id];}
+   setup();$('labels').checked=!!s.labels;$('latchMode').checked=!!s.latchMode;$('latchMode').onchange();power=!!s.power;
+   for(const id in externals)externals[id]=!!s.externals[id];
+   result=K.settle(circuit,s.state,buttons,externals,power);
+   logs=Array.isArray(s.logs)?s.logs.filter(l=>typeof l.text==='string'&&typeof l.time==='string').slice(0,12):[];
+   log('저장된 회로 복원 · 모든 PB 놓음');paint();
+  }
+ });
 });

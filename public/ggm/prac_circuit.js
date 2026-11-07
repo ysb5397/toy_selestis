@@ -15,4 +15,8 @@ window.addEventListener('DOMContentLoaded',()=>{
  $('truth').addEventListener('click',e=>{const b=e.target.closest('[data-row]');if(!b)return;const row=b.dataset.row,bits=Number(row).toString(2).padStart(circuit.inputs.length,'0');circuit.inputs.forEach((id,i)=>inputs[id]=Number(bits[i]));paint();$('truth').querySelector(`[data-row="${row}"]`).focus();});
  $('zoomIn').onclick=()=>setZoom(zoom+20);$('zoomOut').onclick=()=>setZoom(zoom-20);$('fit').onclick=()=>setZoom(100);$('formulaToggle').onclick=()=>{const visible=$('formulaPanel').hidden;$('formulaPanel').hidden=!visible;$('formulaToggle').setAttribute('aria-expanded',String(visible));$('formulaToggle').textContent=visible?'회로의 계산식 접기 −':'회로의 계산식 펼치기 +';};
  $('download').onclick=()=>{const blob=new Blob([K.render(circuit,inputs,{signals:$('signals').checked,labels:$('labels').checked})],{type:'image/svg+xml;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='circuit-'+circuit.id+'.svg';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};select();
+ window.ToyRuntime?.register({
+  capture:()=>({preset:circuit.id,inputs,zoom,signals:$('signals').checked,labels:$('labels').checked,formula:!$('formulaPanel').hidden}),
+  restore:s=>{if(!K.presets.some(p=>p.id===s.preset)||!s.inputs)throw Error('Invalid circuit');$('preset').value=s.preset;select();for(const id of circuit.inputs){if(![0,1].includes(s.inputs[id]))throw Error('Invalid input');inputs[id]=s.inputs[id];}$('signals').checked=!!s.signals;$('labels').checked=!!s.labels;setZoom(Number.isFinite(s.zoom)?s.zoom:100);if(s.formula)$('formulaToggle').click();paint();}
+ });
 });
