@@ -1,6 +1,8 @@
 import { fields, generateProfile, validProfile, profileText } from './model.mjs';
+import { shareResultImage } from './image-share.mjs';
 const $ = id => document.getElementById(id);
 let profile = null, running = false, generation = 0, count = 0, toastTimer;
+let resultImage = null, imagePromise = Promise.resolve(null);
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const ROW_HEIGHT = 156, VALUE_HEIGHT = 58;
 let animations = [];
@@ -42,12 +44,14 @@ function complete() {
   $('traits').setAttribute('aria-busy', 'false');
   $('action-hint').textContent = '다시 눌러도 괜찮아요. 우연은 계속되니까.';
   $('announcement').textContent = `오늘의 인연이 도착했어요. ${fields.map(f => `${f.label} ${profile[f.key]}`).join(', ')}`;
+  prepareResultImage();
   window.ToyRuntime?.save();
 }
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function start() {
   if (running) return;
   running = true; const token = ++generation; count++;
+  resultImage = null;
   cancelAnimations();
   profile = generateProfile(document.querySelector('input[name="gender"]:checked').value);
   $('start').disabled = true; $('start-label').textContent = '인연을 만드는 중…';
@@ -64,7 +68,13 @@ async function start() {
     row.className = 'reel-row';
     // Values travel downward from the last child to the chosen first value.
     const candidates = [profile[field.key], ...Array.from({ length: 14 }, () => field.key === 'gender' && selectedGender !== 'all' ? profile.gender : field.values[Math.floor(Math.random() * field.values.length)])];
-    track.replaceChildren(...candidates.map(text => { const span = document.createElement('span'); span.className = 'reel-value'; span.textContent = text; return span; }));
+    track.replaceChildren(...candidates.map(text => {
+      const span = document.createElement('span'); span.className = 'reel-value'; span.textContent = text;
+      // Keep long joke occupations inside the reel, including narrow phones.
+      const length = [...text].length;
+      span.style.fontSize = `min(35px, calc((100vw - 90px) / ${length}), ${410 / length}px)`;
+      return span;
+    }));
     track.style.transform = `translateY(-${14 * VALUE_HEIGHT}px)`;
   });
   if ($('fast').checked || reducedMotion.matches) { complete(); return; }
@@ -104,10 +114,7 @@ function showCopy(text) {
   const close = document.createElement('button'); close.textContent = '닫기'; close.onclick = () => dialog.close();
   dialog.append(heading, area, close); document.body.append(dialog); dialog.addEventListener('close', () => dialog.remove(), { once: true }); dialog.showModal(); area.focus(); area.select();
 }
-$('download').addEventListener('click', async () => {
-  if (!profile || running) return;
-  const button = $('download'); button.disabled = true;
-  try {
+async function createResultImage(result, resultCount) {
     await document.fonts.ready;
     const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1440;
     const ctx = canvas.getContext('2d');
@@ -119,16 +126,58 @@ $('download').addEventListener('click', async () => {
       const y = 365 + index * 72;
       ctx.fillStyle = '#352b3d'; ctx.fillRect(100, y + 24, 880, 1);
       ctx.textAlign = 'left'; ctx.fillStyle = '#a99ab6'; ctx.font = '26px system-ui'; ctx.fillText(field.label, 100, y);
-      ctx.textAlign = 'right'; ctx.fillStyle = '#f2eafa'; ctx.font = 'bold 32px system-ui'; ctx.fillText(profile[field.key], 980, y);
+      ctx.textAlign = 'right'; ctx.fillStyle = '#f2eafa'; ctx.font = 'bold 32px system-ui'; ctx.fillText(result[field.key], 980, y, 650);
     });
     ctx.textAlign = 'center'; ctx.fillStyle = '#8e809b'; ctx.font = '22px system-ui'; ctx.fillText('재미로 즐기는 가상의 프로필 · BY YSB5397', 540, 1320);
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Image generation failed');
-    const url = URL.createObjectURL(blob); const link = document.createElement('a');
-    link.href = url; link.download = `love-maker-${String(count).padStart(3, '0')}.png`; document.body.append(link); link.click(); link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 60000); toast('결과 이미지를 저장했어요 ♡');
-  } catch { toast('이미지 저장에 실패했어요. 결과 공유를 이용해 주세요.'); }
+    return new File([blob], `love-maker-${String(resultCount).padStart(3, '0')}.png`, { type: 'image/png' });
+}
+function prepareResultImage() {
+  const token = generation;
+  resultImage = null;
+  $('share-image').disabled = true; $('share-image').textContent = '이미지 준비 중…';
+  imagePromise = createResultImage({ ...profile }, count).then(file => {
+    if (token === generation) {
+      resultImage = file;
+      $('share-image').disabled = false; $('share-image').textContent = '↗ 이미지 공유';
+    }
+    return file;
+  }).catch(() => {
+    if (token === generation) {
+      $('share-image').textContent = '이미지 생성 실패';
+      toast('이미지를 만들지 못했어요. 텍스트 공유를 이용해 주세요.');
+    }
+    return null;
+  });
+}
+function saveImage(file) {
+  const url = URL.createObjectURL(file); const link = document.createElement('a');
+  link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+$('download').addEventListener('click', async () => {
+  if (!profile || running) return;
+  const button = $('download'); button.disabled = true;
+  try {
+    const file = await imagePromise;
+    if (!file) throw new Error('Image unavailable');
+    saveImage(file); toast('결과 이미지를 저장했어요 ♡');
+  } catch { toast('이미지 저장에 실패했어요. 텍스트 공유를 이용해 주세요.'); }
   finally { button.disabled = false; }
+});
+$('share-image').addEventListener('click', async () => {
+  if (!resultImage || running) return;
+  const file = resultImage, button = $('share-image'); button.disabled = true;
+  try {
+    // No rendering or awaited work before the native share sheet opens.
+    const status = await shareResultImage(file);
+    if (status === 'unsupported') {
+      saveImage(file); toast('이 브라우저는 이미지 공유를 지원하지 않아 PNG로 저장했어요.');
+    }
+  } catch {
+    saveImage(file); toast('이미지 공유를 열지 못해 PNG로 저장했어요.');
+  } finally { if (resultImage === file) button.disabled = false; }
 });
 window.ToyRuntime?.register({
   capture: () => ({ profile, count, gender: document.querySelector('input[name="gender"]:checked').value, fast: $('fast').checked }),
