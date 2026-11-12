@@ -1,5 +1,6 @@
 import { fields, generateProfile, validProfile, profileText } from './model.mjs';
 import { shareResultImage } from './image-share.mjs';
+import { renderResultImage } from './result-image.mjs';
 const $ = id => document.getElementById(id);
 let profile = null, running = false, generation = 0, count = 0, toastTimer;
 let resultImage = null, imagePromise = Promise.resolve(null);
@@ -114,30 +115,11 @@ function showCopy(text) {
   const close = document.createElement('button'); close.textContent = '닫기'; close.onclick = () => dialog.close();
   dialog.append(heading, area, close); document.body.append(dialog); dialog.addEventListener('close', () => dialog.remove(), { once: true }); dialog.showModal(); area.focus(); area.select();
 }
-async function createResultImage(result, resultCount) {
-    await document.fonts.ready;
-    const canvas = document.createElement('canvas'); canvas.width = 1080; canvas.height = 1440;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#121014'; ctx.fillRect(0, 0, 1080, 1440);
-    ctx.textAlign = 'center'; ctx.fillStyle = '#cba5f7'; ctx.font = '40px system-ui'; ctx.fillText('♡ love-maker', 540, 125);
-    ctx.fillStyle = '#f2f2f2'; ctx.font = 'bold 52px system-ui'; ctx.fillText('오늘의 인연이 도착했어요!', 540, 225);
-    ctx.fillStyle = '#99909f'; ctx.font = '24px system-ui'; ctx.fillText('12가지의 우연이 모여, 하나의 인연으로.', 540, 281);
-    fields.forEach((field, index) => {
-      const y = 365 + index * 72;
-      ctx.fillStyle = '#352b3d'; ctx.fillRect(100, y + 24, 880, 1);
-      ctx.textAlign = 'left'; ctx.fillStyle = '#a99ab6'; ctx.font = '26px system-ui'; ctx.fillText(field.label, 100, y);
-      ctx.textAlign = 'right'; ctx.fillStyle = '#f2eafa'; ctx.font = 'bold 32px system-ui'; ctx.fillText(result[field.key], 980, y, 650);
-    });
-    ctx.textAlign = 'center'; ctx.fillStyle = '#8e809b'; ctx.font = '22px system-ui'; ctx.fillText('재미로 즐기는 가상의 프로필 · BY YSB5397', 540, 1320);
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    if (!blob) throw new Error('Image generation failed');
-    return new File([blob], `love-maker-${String(resultCount).padStart(3, '0')}.png`, { type: 'image/png' });
-}
 function prepareResultImage() {
   const token = generation;
   resultImage = null;
   $('share-image').disabled = true; $('share-image').textContent = '이미지 준비 중…';
-  imagePromise = createResultImage({ ...profile }, count).then(file => {
+  imagePromise = renderResultImage(document.querySelector('.story'), count).then(file => {
     if (token === generation) {
       resultImage = file;
       $('share-image').disabled = false; $('share-image').textContent = '↗ 이미지 공유';
@@ -156,6 +138,35 @@ function saveImage(file) {
   link.href = url; link.download = file.name; document.body.append(link); link.click(); link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
+function showImagePreview(file) {
+  const previousFocus = document.activeElement;
+  const url = URL.createObjectURL(file);
+  const dialog = document.createElement('dialog'); dialog.className = 'image-share-preview';
+  dialog.setAttribute('aria-labelledby', 'image-share-title');
+  const heading = document.createElement('h2'); heading.id = 'image-share-title'; heading.textContent = '이미지로 공유하기';
+  const hint = document.createElement('p');
+  hint.textContent = '이 브라우저에서는 바로 공유할 수 없어요. 이미지를 복사해 원하는 앱에 붙여 넣어 보세요.';
+  const img = document.createElement('img'); img.src = url; img.alt = '공유할 love-maker 결과 이미지';
+  const actions = document.createElement('div'); actions.className = 'preview-actions';
+  if (navigator.clipboard?.write && typeof ClipboardItem === 'function') {
+    const copy = document.createElement('button'); copy.textContent = '이미지 복사';
+    copy.addEventListener('click', async () => {
+      copy.disabled = true;
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': file })]);
+        toast('이미지를 복사했어요. 원하는 앱에서 붙여 넣어 주세요.');
+      } catch { hint.textContent = '이미지 복사가 제한된 브라우저예요. 브라우저 메뉴에서 외부 브라우저로 열어 다시 공유해 주세요.'; }
+      finally { copy.disabled = false; }
+    });
+    actions.append(copy);
+  } else hint.textContent = '이 브라우저에서는 바로 공유할 수 없어요. 이미지의 길게 누르기·우클릭 메뉴를 이용하거나, 외부 브라우저에서 다시 열어 주세요.';
+  const close = document.createElement('button'); close.textContent = '닫기'; close.addEventListener('click', () => dialog.close());
+  actions.append(close); dialog.append(heading, hint, img, actions); document.body.append(dialog);
+  dialog.addEventListener('close', () => {
+    URL.revokeObjectURL(url); dialog.remove(); previousFocus?.focus();
+  }, { once: true });
+  dialog.showModal();
+}
 $('download').addEventListener('click', async () => {
   if (!profile || running) return;
   const button = $('download'); button.disabled = true;
@@ -173,10 +184,10 @@ $('share-image').addEventListener('click', async () => {
     // No rendering or awaited work before the native share sheet opens.
     const status = await shareResultImage(file);
     if (status === 'unsupported') {
-      saveImage(file); toast('이 브라우저는 이미지 공유를 지원하지 않아 PNG로 저장했어요.');
+      showImagePreview(file);
     }
   } catch {
-    saveImage(file); toast('이미지 공유를 열지 못해 PNG로 저장했어요.');
+    showImagePreview(file);
   } finally { if (resultImage === file) button.disabled = false; }
 });
 window.ToyRuntime?.register({
