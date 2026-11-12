@@ -1,14 +1,29 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const { Readable } = require('node:stream');
+const studioAPI = import('../worker/web-studio.mjs');
 const { build } = require('./build-catalog.cjs');
 const publicDir = path.resolve(__dirname, '../public');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png' };
 build(publicDir);
-http.createServer((req, res) => {
+http.createServer(async (req, res) => {
   let route;
   try { route = decodeURIComponent(new URL(req.url, 'http://localhost').pathname); }
   catch { res.writeHead(400).end(); return; }
+  if (route.startsWith('/ysb5397/web-studio/api/')) {
+    const controller = new AbortController();
+    res.on('close', () => { if (!res.writableEnded) controller.abort(); });
+    try {
+      const request = new Request('http://' + req.headers.host + req.url, { method: req.method, headers: req.headers, signal: controller.signal, ...(!['GET','HEAD'].includes(req.method) ? { body: Readable.toWeb(req), duplex: 'half' } : {}) });
+      const response = await (await studioAPI).handleStudioAPI(request);
+      if (!response) { res.writeHead(404).end('Not found'); return; }
+      res.writeHead(response.status, Object.fromEntries(response.headers));
+      if (response.body) for await (const chunk of response.body) { if (res.destroyed) break; res.write(chunk); }
+      res.end();
+    } catch { if (!res.headersSent) res.writeHead(500); res.end('Web Studio request failed'); }
+    return;
+  }
   if (route === '/projects.json') {
     try { build(publicDir); } catch { res.writeHead(500).end('Catalog build failed'); return; }
   }

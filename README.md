@@ -49,13 +49,19 @@ public/
 
 ## 로컬 확인
 
-Node.js 20 이상에서 실행한다. 목록 생성과 미리보기에는 외부 패키지가 필요 없다.
+Web Studio 빌드를 포함하므로 Node.js 22.12 이상에서 처음에는 `npm ci`로 의존성을 설치한다. 목록 수집 자체는 계속 외부 패키지 없이 실행할 수 있다.
 
 ```powershell
-npm run build  # 목록만 갱신
+npm run build  # Web Studio 빌드 후 목록·버전 갱신
 npm run dev    # http://127.0.0.1:4192/ 로 미리보기
 npm test       # 자동 수집과 카드 렌더링 검사
 ```
+
+## Web Studio
+
+`/ysb5397/web-studio/`에 코드·블록·캔버스 웹 편집기를 추가했다. 소스는 `apps/web-studio`, 배포 파일은 `public/ysb5397/web-studio`에 있다. 공통 index 테마를 적용하고 메인 프로젝트 목록에 자동 등록한다.
+
+브라우저별 작업 저장·기록 복원과 개인 API Key를 사용하는 GPT Worker를 포함한다. Worker 설정은 기존 정적 프로젝트 경로를 유지하며 편집기 API 경로만 처리한다. 로컬 앱용 ChatGPT OAuth는 공개 웹에 그대로 이식하지 않았고 로컬 원본에 유지했다. 설치·배포 구성과 차이는 [Web Studio 안내](apps/web-studio/README.md)를 참고한다.
 
 미리보기 중에는 메인을 새로고침하면 목록이 다시 생성되므로, 파일을 추가할 때마다 서버를 재시작할 필요가 없다.
 

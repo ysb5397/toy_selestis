@@ -43,6 +43,21 @@
       "tags": [],
       "cover": "grid",
       "category": "퀴즈"
+    },
+    {
+      "id": "ysb5397/web-studio/index.html",
+      "url": "/ysb5397/web-studio/",
+      "title": "Web Studio",
+      "description": "코드·블록·미리보기를 함께 편집하는 웹 작업실. 애니메이션 타임라인과 GPT 편집을 한곳에서 사용해.",
+      "author": "ysb5397",
+      "tags": [
+        "HTML·CSS·JS",
+        "웹 편집기",
+        "AI",
+        "타임라인"
+      ],
+      "cover": "code",
+      "category": "도구"
     }
   ]
 }

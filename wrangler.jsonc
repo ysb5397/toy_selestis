@@ -1,11 +1,14 @@
 {
   "name": "toy",
   "compatibility_date": "2026-11-04",
+  "main": "worker/index.mjs",
   "build": {
-    "command": "node scripts/build-catalog.cjs",
-    "watch_dir": "public"
+    "command": "npm run build",
+    "watch_dir": ["apps/web-studio", "worker", "public/shared"]
   },
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/ysb5397/web-studio/api/*"]
   }
 }

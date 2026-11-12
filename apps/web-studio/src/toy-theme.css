@@ -1,0 +1,42 @@
+/* Match public/index.html and shared/theme.css; page content inside the canvas keeps its own CSS. */
+:root { color-scheme: dark; color: var(--fg, #f2f2f2); background: var(--bg, #0b0b0c); font-family: var(--font, system-ui, sans-serif); }
+.app-shell { background: var(--bg); color: var(--fg); }
+.app-shell .app-header, .app-shell .statusbar, .app-shell .panel-tabs, .app-shell .canvas-toolbar { background: var(--bg); border-color: var(--line); }
+.app-shell .left-panel, .app-shell .right-panel, .app-shell .canvas-area, .app-shell .canvas-shell { background-color: var(--surface); border-color: var(--line); border-radius: 0; }
+.app-shell .workspace { background: var(--bg); }
+.app-shell .canvas-panel, .app-shell .canvas-context, .app-shell .canvas-scroll, .app-shell .breadcrumb { background-color: var(--surface); border-color: var(--line); }
+.app-shell .canvas-scroll { background-image: radial-gradient(#ffffff09 1px, transparent 1px); }
+.app-shell .page-row, .app-shell .local-card, .app-shell .devices, .app-shell .block-grid button { background: var(--card); color: var(--fg); border-color: var(--line); border-radius: 10px; }
+.app-shell .page-row svg, .app-shell .local-card-icon, .app-shell .local-card strong, .app-shell .block-grid svg, .app-shell .run-button { color: var(--fg); }
+.app-shell .devices button.active, .app-shell .timeline-toggle.active { background: #29292f; color: var(--fg); border-color: #45454d; }
+.app-shell .timeline-toggle, .app-shell .canvas-label, .app-shell .tree-label, .app-shell .empty-properties li { color: var(--fg); }
+.app-shell .empty-icon { background: var(--card); color: var(--fg); border-color: var(--line); }
+.app-shell .studio-home { display: flex; gap: 13px; min-width: 196px; text-decoration: none; }
+.app-shell .studio-home strong { font-size: 29px; letter-spacing: -1.8px; color: var(--fg); }
+.app-shell .studio-home strong span { font-size: inherit; letter-spacing: inherit; color: var(--muted); }
+.app-shell .studio-brand { font-size: 10px; color: var(--muted); letter-spacing: 1px; border-left: 1px solid var(--line); padding-left: 13px; }
+.app-shell .logo-mark, .app-shell .button.export { background: var(--fg); color: var(--bg); border-color: var(--fg); border-radius: 9px; }
+.app-shell .button.secondary, .app-shell .demo-launch, .app-shell .ai-launch, .interaction-panel .interaction-save, .interaction-help button { background: var(--card); color: var(--fg); border-color: #38383e; border-radius: 9px; }
+.app-shell .button:hover, .app-shell .ai-launch:hover, .app-shell .demo-launch:hover { border-color: #777780; }
+.app-shell .tree-row.active, .app-shell .panel-tabs button.selected, .app-shell .selected-file { background: #232327; color: var(--fg); border-color: #44444b; }
+.app-shell .tree-row.active::before { background: var(--fg); }
+.app-shell .panel-tabs button.selected::after { background: var(--fg); }
+.app-shell .tag-icon, .app-shell .panel-tabs button.selected, .app-shell .sync-label, .app-shell .ai-later strong { color: var(--fg); }
+.app-shell input:not([type=checkbox]), .app-shell textarea, .app-shell select, .ai-panel input:not([type=checkbox]), .ai-panel textarea, .ai-panel select { border-radius: 9px; background: var(--bg); color: var(--fg); border-color: #38383e; }
+.app-shell .project-title input { background: transparent; border-color: transparent; }
+.app-shell .local-badge { background: var(--card); color: var(--muted); }
+.app-shell .element-type, .interaction-source, .interaction-rule { background: var(--card); border-color: var(--line); color: var(--fg); border-radius: 9px; }
+.app-shell .properties section { border-color: var(--line); }
+.app-shell .properties h3, .app-shell .properties h3 span, .app-shell .field > span, .app-shell .property-note, .app-shell .empty-properties p { color: var(--muted); }
+.ai-panel, .demo-panel { background: #161618fa; border-color: #45454d; border-radius: 14px; }
+.ai-heading, .ai-settings, .ai-compose, .ai-logs { border-color: var(--line); }
+.ai-settings, .ai-auth-modes button, .ai-message.user { background: #111113; border-color: #38383e; }
+.ai-auth-modes button[aria-pressed=true] { background: #29292f; border-color: var(--fg); }
+.ai-auth-modes strong, .ai-heading strong, .ai-welcome h2, .ai-state, .ai-model label { color: var(--fg); }
+.ai-auth-modes small, .ai-settings p, .ai-settings a, .ai-welcome p, .ai-compose label, .ai-compose p, .ai-message > span { color: var(--muted); }
+.ai-heading svg, .ai-welcome > svg, .ai-compose .ai-restore { color: var(--fg); }
+.ai-compose button:not(.ai-stop) { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.interaction-panel h3, .interaction-rule-heading strong, .interaction-edit, .interaction-element { color: var(--fg); }
+.interaction-intro, .interaction-panel form, .interaction-list, .interaction-help { border-color: var(--line); }
+.app-shell .field, .app-shell .field select, .app-shell .field input, .app-shell .properties h3, .app-shell .properties h3 span, .app-shell .property-note { font-size: 11px; }
+@media(max-width: 950px) { .app-shell .studio-home { min-width: 145px; gap: 8px; } .app-shell .studio-brand { font-size: 9px; padding-left: 8px; } }

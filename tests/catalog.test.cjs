@@ -115,7 +115,7 @@ test('current author directories, project files and deployment hook stay connect
   assert(projects.some(p => p.author === 'ysb5397' && p.url === '/ysb5397/quiz'));
   for (const p of projects) assert(fs.existsSync(path.join(root, p.id)));
   const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../wrangler.jsonc'), 'utf8'));
-  assert.equal(config.build.command, 'node scripts/build-catalog.cjs');
+  assert.equal(config.build.command, 'npm run build');
   assert.equal(config.assets.directory, './public');
   const index = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
   assert(index.includes('src="./catalog.js"')); assert(!index.includes('href="/quiz"'));
