@@ -1,39 +1,68 @@
 <!doctype html>
 <html lang="ko">
-<head><meta name="toy:build" content="43cb87880728791d6183"><meta name="toy:state-version" content="1">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="toy:build" content="43cb87880728791d6183"><meta name="toy:state-version" content="1">
+<title>코드 심사국 — 자바 학습 게임</title>
+<meta name="description" content="규정집을 읽고 자바 코드와 개념 설명의 모순을 찾는 서류 심사 게임입니다.">
+<meta name="toy:title" content="코드 심사국"><meta name="toy:tags" content="Java,학습,픽셀,게임"><meta name="toy:category" content="게임"><meta name="toy:cover" content="code">
+<meta name="theme-color" content="#242b28"><link rel="icon" href="/shared/favicon.svg">
 <link rel="stylesheet" href="/shared/runtime.css"><script src="/shared/runtime.js" defer></script>
-
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>코드 심사국 — 자바 학습 게임</title>
-  <meta name="description" content="자바 코드와 실행 결과를 대조하고 승인 도장을 찍어 봐. 자료형·연산, 조건문·반복문, 클래스·객체를 골라 배우는 픽셀풍 서류 심사 게임.">
-  <meta name="toy:title" content="코드 심사국"><meta name="toy:tags" content="Java,학습,픽셀,게임"><meta name="toy:category" content="게임"><meta name="toy:cover" content="code">
-  <meta name="theme-color" content="#242b28"><link rel="icon" href="/shared/favicon.svg" type="image/svg+xml">
-  <link rel="preload" as="image" href="assets/stamp-approve-v1.png"><link rel="preload" as="image" href="assets/stamp-reject-v1.png">
-  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="stamps.css"><link rel="stylesheet" href="visitors.css"><link rel="stylesheet" href="comparison.css"><script src="cases.js" defer></script><script src="visitors.js" defer></script><script src="comparison.js" defer></script><script src="game.js" defer></script>
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="stamps.css"><link rel="stylesheet" href="visitors.css"><link rel="stylesheet" href="comparison.css"><link rel="stylesheet" href="curriculum.css"><link rel="stylesheet" href="desk.css">
+<script src="cases.js" defer></script><script src="curriculum.js" defer></script><script src="visitors.js" defer></script><script src="comparison.js" defer></script><script src="handbook.js" defer></script><script src="game.js" defer></script>
 </head>
 <body>
-<header class="topbar"><a href="/" class="home">← toy.</a><a href="./" class="wordmark"><span class="mark">J</span> 코드 심사국 <small>DEPARTMENT OF JAVA</small></a><button id="sound" class="utility" aria-pressed="false">소리 꺼짐</button></header>
+<header class="topbar"><a href="/" class="home" aria-label="프로젝트 목록">← toy.</a><a href="./" class="wordmark"><span class="mark">J</span> 코드 심사국 <small>JAVA INSPECTION BUREAU</small></a><div class="header-actions"><button id="openHandbookPlay" class="utility" type="button">코드 읽는 법</button><button id="sound" class="utility" aria-pressed="false">소리 꺼짐</button></div></header>
 <main>
-  <div class="station-label"><span><i class="live-dot"></i> 제 04 심사 창구</span><span>배우고, 확인하고, 도장을 찍어.</span></div>
-  <section class="game-shell" aria-label="코드 심사 게임">
-    <div class="statusbar"><span id="dayLabel">신입 심사관 연수</span><span id="progress">근무 대기 중</span><span id="score">정확도 —</span></div>
-    <section class="scene" aria-label="픽셀로 그린 심사 창구"><canvas id="scene" width="960" height="220" aria-label="창밖으로 도시가 보이는 코드 심사국과 서류를 제출한 방문자" role="img"></canvas><div id="visitorRig" class="visitor-rig" role="img" aria-label="조합형 픽셀 방문자"><div class="visitor-body-motion"><canvas id="visitorBody" width="96" height="112" aria-hidden="true"></canvas></div><div class="visitor-head-motion"><canvas id="visitorHead" width="96" height="112" aria-hidden="true"></canvas></div></div><div class="scene-sign">JAVA ENTRY<br><span>코드 심사국</span></div><div class="booth-sign">04</div><div class="speech" id="speech">첫 근무야? 규정집부터 챙겨 둬.</div></section>
-    <div class="desk-bar"><span id="caseLabel">입국 신청서 / JAVA PROGRAM</span><span id="topicLabel">검토 전 규정집 확인 필수</span></div>
-    <details class="look-lab" id="appearanceLab"><summary>방문자 외형 작업실 <span>얼굴 · 머리 · 복장 · 액세서리를 자유롭게 조합해 봐</span></summary><div class="look-content"><p>성별 구분 없이 모든 머리와 복장을 조합할 수 있어. 직접 바꾸면 그 외형이 고정되고, 자동 조합으로 돌아가면 신청자마다 다른 모습으로 찾아와.</p><div class="look-fields" id="lookFields"></div><div class="look-actions"><button id="randomLook">랜덤 조합 뽑기</button><button id="autoLook">신청자별 자동 조합</button><label><input type="checkbox" id="lookLock">현재 조합 고정</label></div><p id="lookStatus" role="status"></p></div></details>
-    <section id="welcome" class="welcome">
-      <div class="welcome-copy"><p class="eyebrow">PAPERS, CODE & COFFEE</p><h1>이 코드,<br>통과시켜도 될까<span>?</span></h1><p>이곳에서는 코드도 심사를 받아야 해.<br>신청서의 <strong>코드·실행 결과</strong>와 <strong>규정</strong>을 골라 대조해.<br>맞으면 승인, 모순을 찾았다면 반려 도장을 찍어 줘.</p><div class="training-note"><span>신입 심사관에게</span>시간 제한은 없어. 옆에 놓인 규정집은 언제든 펼쳐도 돼.</div></div>
-      <div class="setup"><p class="eyebrow">01 / 학습 범위 선택</p><h2>오늘은 어떤 코드를 심사할까?</h2><p class="muted">여러 주제를 함께 선택할 수 있어.</p><div id="topics" class="topic-options"></div><div class="start-summary"><span id="deckSummary"></span><span>주제별 6건</span></div><button id="start" class="primary">출근 도장 찍기 <span>→</span></button><button id="resume" class="resume" hidden>이전 근무 이어하기 →</button><p id="saveNote" class="save-note">진행 상황은 이 브라우저에 자동으로 저장돼.</p></div>
-    </section>
-    <section id="play" class="workbench" hidden>
-<section class="comparison-panel" aria-labelledby="comparisonTitle"><div class="comparison-heading"><div><p class="eyebrow">CROSS-CHECK / JAVA 21 LTS</p><h2 id="comparisonTitle">두 항목을 골라 대조해 봐.</h2></div><span id="proofBadge" class="proof-badge">모순 증거 없음</span></div><p class="comparison-help">코드의 한 행 또는 신청 결과를 누르고, 규정집에서 조항을 골라 줘. 대조는 제출 코드 전체를 문맥으로 사용해.</p><div class="comparison-tools"><div id="documentSelection" class="selection-card"><span>01 / 서류 항목</span><strong>코드 한 행 또는 신청 결과 선택</strong></div><div id="ruleSelection" class="selection-card"><span>02 / 규정 조항</span><strong>규정집에서 조항 선택</strong></div><button id="compare" class="primary" disabled>대조하기</button><button id="clearComparison" class="clear-comparison">선택 해제</button></div><div id="comparisonResult" class="comparison-result" role="status" aria-live="polite"></div><section id="evidence" class="evidence" aria-label="확정된 모순 증거" hidden></section></section>
-      <div class="documents"><div class="paper-top"><span class="eyebrow">REPUBLIC OF JAVA</span><span id="serial"></span></div><div class="document-heading"><div><p class="eyebrow">프로그램 실행 허가 신청서</p><h2 id="applicant"></h2></div><span class="document-seal">J<br>검토용</span></div><div class="applicant-meta"><span id="caseTitle"></span><span id="documentTopic"></span></div><div class="code-heading"><span>제출 코드</span><span>Java 21 LTS · main 내부¹</span></div><pre tabindex="0" aria-label="심사할 자바 코드"><code id="code"></code></pre><p id="context" class="context"></p><div class="claim"><span>신청자가 주장한 결과</span><button id="claim" class="claim-target" type="button" data-compare-document="claim" aria-pressed="false"></button></div><p class="paper-foot">¹ 별도 안내가 없으면 클래스와 main 선언은 생략해. 표시한 코드 외에는 실행되지 않아.</p><div class="signature-area"><div class="signature-label"><span>심사관 날인란</span><span id="stampStatus">심사 대기</span></div><div class="signature-slot"><span id="stampPlaceholder" class="stamp-placeholder">서류 확인 후 도장을 찍어 줘.</span><div id="stamp" class="stamp" hidden></div></div></div></div>
-      <aside class="rulebook"><div class="book-heading"><span class="book-icon">≡</span><div><p class="eyebrow">INSPECTOR'S HANDBOOK</p><h2>심사 규정집</h2></div><span class="edition">제 1판</span></div><div id="ruleTabs" class="rule-tabs" role="tablist" aria-label="학습 주제별 규정"></div><div id="rules" role="tabpanel" tabindex="0"></div><div class="sticky-note"><strong>심사관의 메모</strong><p>출력값을 먼저 직접 계산해 봐.<br>문자열의 공백과 대소문자도 결과의 일부야.</p></div></aside>
-      <div class="decision" id="decision"><div><p class="eyebrow">INSPECTOR'S STAMP TRAY</p><strong id="decisionTitle">신청 내용이 정확한가?</strong><p id="decisionHint">코드와 주장한 결과가 일치해야 승인할 수 있어.</p><span class="tray-note">도장을 눌러 심사 결과를 남겨 줘.</span></div><div class="stamp-buttons"><button id="deny" class="deny" aria-label="반려" aria-pressed="false"><span class="tool-visual" aria-hidden="true"><img src="assets/stamp-tool-v1.png" alt="" width="112" height="112"><span class="tool-plaque">반려</span></span><span class="tool-label">반려 <kbd>D</kbd></span></button><button id="approve" class="approve" aria-label="승인" aria-pressed="false"><span class="tool-visual" aria-hidden="true"><img src="assets/stamp-tool-v1.png" alt="" width="112" height="112"><span class="tool-plaque">승인</span></span><span class="tool-label">승인 <kbd>A</kbd></span></button></div></div>
-      <section id="feedback" class="feedback" aria-live="polite" hidden></section>
-    </section>
-    <section id="report" class="report" hidden></section>
-    <footer class="game-footer"><span>JAVA INSPECTION BUREAU · EST. 2026</span><button id="backToSetup" class="text-button" hidden>주제 선택으로</button><span>한 줄씩, 확실하게.</span></footer>
-  </section>
-  <p class="below-note">Papers, Please의 서류 대조 방식에서 영감을 받은 오리지널 학습 게임 · 캐릭터와 그래픽은 직접 제작했어.</p>
+<section class="game-shell" aria-label="코드 심사 게임">
+<div class="statusbar"><span id="dayLabel">신입 심사관 연수</span><span id="progress">근무 대기 중</span><span id="score">정확도 —</span><button id="backToSetup" class="text-button" hidden>주제 선택으로</button></div>
+<section id="welcome" class="welcome">
+<div class="welcome-copy"><p class="eyebrow">DEPARTMENT 04 / JAVA 21</p><h1>규정을 읽고,<br>모순을 찾으십시오<span>.</span></h1><p>방문자가 제출한 짧은 코드와 설명을 확인하십시오.<br>규정과 일치하면 승인, 모순을 입증했다면 반려합니다.</p><div class="training-note"><span>첫 근무 안내</span>사전 지식이나 시간 제한은 없습니다.<br>모든 규정은 처음부터 열람할 수 있습니다.</div><button id="openHandbook" class="handbook-open" type="button">규정집 미리 읽기 ↗</button><p class="curriculum-note">11개 교재 주제 · 63개 서류<br>JVM과 자료형부터 상속과 다형성까지</p></div>
+<div class="setup"><div class="setup-heading"><button id="previewBookCompact" class="compact-book" type="button">규정집 미리 읽기 ↗</button><p class="eyebrow">01 / 오늘의 학습 범위</p><h2>심사할 주제를 선택하십시오.</h2><p class="muted">여러 주제를 함께 선택할 수 있습니다.</p></div><div id="topics" class="topic-options"></div><div class="setup-bottom"><div class="start-summary"><span id="deckSummary"></span><span>JAVA 21 LTS</span></div><button id="start" class="primary">출근 도장 찍기 <span>→</span></button><button id="resume" class="resume" hidden>이전 근무 이어하기 →</button><p id="saveNote" class="save-note">진행 상황은 이 브라우저에 자동 저장됩니다.</p></div></div>
+</section>
+<section id="play" class="workbench" data-pane="document" hidden>
+<div class="mobile-tabs" role="tablist" aria-label="심사대 화면"><button id="documentPane" role="tab" aria-selected="true" aria-controls="documentDesk">서류·창구</button><button id="bookPane" role="tab" aria-selected="false" aria-controls="rightDesk">규정집·해설</button></div>
+<div id="documentDesk" class="document-desk">
+<div class="visitor-row">
+<section class="scene" aria-label="방문자 창구"><canvas id="scene" width="960" height="220" aria-hidden="true"></canvas><div id="visitorRig" class="visitor-rig" role="img" aria-label="픽셀 방문자"><div class="visitor-body-motion"><canvas id="visitorBody" width="96" height="112" aria-hidden="true"></canvas></div><div class="visitor-head-motion"><canvas id="visitorHead" width="96" height="112" aria-hidden="true"></canvas></div></div><div class="booth-sign">04</div></section>
+<div class="claim-summary"><div class="speech" id="speech">제출 자료를 확인하십시오.</div><div class="claim"><span>신청 내용</span><button id="claim" class="claim-target" type="button" data-compare-document="claim" aria-pressed="false"></button></div></div>
+</div>
+<article class="documents">
+<div class="paper-top"><span id="caseLabel">자바 자료 심사 신청서</span><span id="serial"></span></div>
+<div class="document-heading"><div><h2 id="applicant"></h2><p id="caseTitle"></p></div><span id="documentTopic"></span></div>
+<div class="code-heading"><span id="documentLabel">제출 코드</span><span id="contextLabel">Java 21 LTS · main 내부¹</span></div>
+<pre id="codeViewport" tabindex="0" aria-label="심사할 자바 코드"><code id="code"></code></pre>
+<p id="context" class="context"></p><p id="paperFoot" class="paper-foot"></p>
+<div class="signature-area"><span id="stampStatus">심사 대기</span><div class="signature-slot"><span id="stampPlaceholder" class="stamp-placeholder">심사관 날인란</span><div id="stamp" class="stamp" hidden></div></div></div>
+</article>
+</div>
+<aside id="rightDesk" class="right-desk">
+<div class="right-tabs"><button id="showRules" type="button" aria-pressed="true">심사 규정집</button><button id="showFeedback" type="button" aria-pressed="false" disabled>판정 해설</button><span id="topicLabel">INSPECTOR'S HANDBOOK</span></div>
+<div id="rulebook" class="rulebook"><div id="bookBrowser" class="book-browser">
+<div class="book-toolbar"><label for="bookTopic">주제</label><select id="bookTopic"></select><label for="bookSearch" class="sr-only">규정 검색</label><input id="bookSearch" type="search" placeholder="단어·코드 기호로 검색" maxlength="120"><button id="bookmarkFilter" type="button" aria-pressed="false">☆ 책갈피</button><button id="resetBook" type="button">전체 보기</button></div>
+<div id="symbolIndex" class="symbol-index" aria-label="기호 색인"></div>
+<div class="book-pages"><nav class="book-nav" aria-label="규정 목차"><div id="bookCount" class="book-count" role="status"></div><div id="ruleList"></div></nav><div class="book-sheet">
+<div id="ruleBody" class="rule-body" tabindex="0"></div>
+<div class="book-page-footer"><button id="previousRule" type="button" aria-label="이전 조항">←</button><span id="rulePosition"></span><button id="nextRule" type="button" aria-label="다음 조항">→</button><button id="bookmarkRule" type="button" aria-pressed="false">☆</button><div id="rules"><button id="useRule" type="button" aria-pressed="false">대조할 규정으로 선택</button></div></div>
+</div></div>
+</div></div>
+<section id="feedback" class="feedback" aria-live="polite" hidden></section>
+</aside>
+<div class="desk-dock">
+<section class="comparison-panel" aria-label="자료와 규정 대조">
+<div class="comparison-tools"><div id="documentSelection" class="selection-card"></div><span class="compare-arrow" aria-hidden="true">↔</span><div id="ruleSelection" class="selection-card"></div><div class="compare-actions"><button id="compare" class="primary" disabled>대조하기</button><button id="clearComparison" class="clear-comparison">선택 해제</button></div></div>
+<div class="comparison-status"><span id="proofBadge" class="proof-badge">모순 증거 없음</span><p id="comparisonResult" class="comparison-result" role="status"></p><button id="openEvidence" type="button" disabled>증거 보기</button></div>
+</section>
+<div class="decision" id="decision"><div class="decision-copy"><strong id="decisionTitle">신청 내용이 정확합니까?</strong><p id="decisionHint"></p></div><div class="stamp-buttons"><button id="deny" class="deny" aria-label="반려" aria-pressed="false"><span class="tool-visual" aria-hidden="true"><img src="assets/stamp-tool-v1.png" alt="" width="112" height="112"><span class="tool-plaque">반려</span></span><span class="tool-label">반려 <kbd>D</kbd></span></button><button id="approve" class="approve" aria-label="승인" aria-pressed="false"><span class="tool-visual" aria-hidden="true"><img src="assets/stamp-tool-v1.png" alt="" width="112" height="112"><span class="tool-plaque">승인</span></span><span class="tool-label">승인 <kbd>A</kbd></span></button></div></div>
+</div>
+</section>
+<section id="report" class="report" hidden></section>
+</section>
 </main>
-</body></html>
+<dialog id="handbookDialog" class="handbook-dialog" aria-labelledby="handbookTitle"><div class="handbook-heading"><div><p class="eyebrow">JAVA 21 / HANDBOOK</p><h2 id="handbookTitle">규정집 미리 읽기</h2></div><button id="closeHandbook" type="button" class="secondary">닫기</button></div><div id="handbookContent" class="handbook-content"></div></dialog>
+<dialog id="helpDialog" class="help-dialog" aria-labelledby="helpTitle"><div class="handbook-heading"><h2 id="helpTitle">코드와 서류를 읽는 법</h2><button id="closeHelp" type="button" class="secondary">닫기</button></div><div class="reading-guide"><h3>01 / 코드의 기본</h3><p>코드는 위에서 아래로 실행합니다. ;는 문장의 끝이고 { }는 함께 실행할 블록입니다. // 뒤는 실행하지 않는 주석입니다. main은 프로그램을 시작하는 메서드이며 별도 안내가 없으면 제출 코드는 main 안에 있습니다.</p><h3>02 / 값과 출력</h3><p>=는 오른쪽 값을 왼쪽 변수에 저장합니다. ==는 두 값이 같은지 비교합니다. System.out.print(값)은 값을 줄바꿈 없이 출력합니다. 따옴표는 문자열의 경계이며 출력에 포함되지 않습니다.</p><pre>System.out.print("가");
+System.out.print(2);
+// 출력: 가2</pre><h3>03 / 심사의 순서</h3><p>코드 심사는 출력 또는 컴파일 가능 여부를, 개념 심사는 파일·도구·상황의 설명을 확인합니다. 자료 행이나 신청 내용을 선택하고 규정을 찾아 대조하십시오. 모순 증거를 확보하면 반려할 수 있습니다. 컴파일 오류가 있으면 프로그램은 실행되지 않습니다.</p><p>규정 이름을 몰라도 기호 색인에서 ++, &&, [] 같은 모양으로 찾을 수 있습니다. 규정을 읽는 것과 대조할 규정으로 선택하는 것은 별개의 조작입니다.</p></div></dialog>
+<dialog id="evidenceDialog" class="help-dialog" aria-labelledby="evidenceTitle"><div class="handbook-heading"><h2 id="evidenceTitle">확정된 모순 증거</h2><button id="closeEvidence" type="button" class="secondary">닫기</button></div><section id="evidence" class="evidence" hidden></section></dialog>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "compile-please-checks",
+  "private": true,
+  "scripts": {
+    "test": "node --test curriculum.test.cjs interaction.test.cjs",
+    "test:java": "node validate-java.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  },
+  "dependencies": {
+    "toy-projects": "file:../../../.."
+  }
+}

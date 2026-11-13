@@ -11,7 +11,6 @@ const choices={
  glasses:[['none','안경 없음'],['round','둥근 안경'],['square','사각 안경']],
  accessory:[['none','장식 없음'],['badge','명찰'],['earring','귀걸이'],['tie','넥타이']]
 };
-const labels={face:'얼굴형',skin:'피부색',hair:'머리',hairColor:'머리색',outfit:'복장',fabric:'복장색',glasses:'안경',accessory:'액세서리'};
 const skins={light:['#edc7a2','#d3a17d','#f8dbc0'],warm:['#d7a57c','#b97e58','#edbc91'],tan:['#b78059','#915b40','#ce9b71'],deep:['#87563f','#633d30','#a77552']};
 const hairs={brown:['#59402e','#382c24','#805b3d'],black:['#34352f','#222923','#53554b'],auburn:['#794733','#4d3027','#a36b49'],gray:['#838379','#53584e','#b1afa0']};
 const fabrics={olive:['#62684c','#424c38','#879071'],slate:['#536a70','#354b53','#7d9294'],brown:['#79614d','#514536','#a18a6a'],wine:['#77514e','#503b3a','#a27669']};
@@ -20,8 +19,7 @@ function hash(text){let value=2166136261;for(const c of String(text)){value^=c.c
 function normalizeConfig(input){if(!input||typeof input!=='object')return null;const result={};for(const [key,values] of Object.entries(choices)){if(!values.some(([v])=>v===input[key]))return null;result[key]=input[key];}return result;}
 function createConfig(seed,identity){let n=hash(`${seed}:${identity}`);const next=()=>{n+=0x6D2B79F5;let t=n;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};return Object.fromEntries(Object.entries(choices).map(([key,values])=>[key,values[Math.floor(next()*values.length)][0]]));}
 const $=id=>document.getElementById(id),rig=$('visitorRig'),body=$('visitorBody'),head=$('visitorHead');
-let identity='welcome',seed=1,config=createConfig(seed,identity),override=null,appearanceSeed=Date.now(),currentKey='';
-try{override=normalizeConfig(JSON.parse(localStorage.getItem('java-inspector:look:v1')));}catch{}
+let config=createConfig(1,'welcome'),currentKey='';
 function pen(canvas){const ctx=canvas.getContext('2d');if(!ctx)return null;ctx.clearRect(0,0,96,112);ctx.imageSmoothingEnabled=false;return (x,y,w,h,color)=>{ctx.fillStyle=color;ctx.fillRect(x,y,w,h);};}
 function drawBody(c){const r=pen(body);if(!r)return;const [cloth,shade,light]=fabrics[c.fabric],[skin,dark]=skins[c.skin];
  // Shoulders, sleeves, and neck use identical attachment points for every outfit.
@@ -57,22 +55,12 @@ function drawHead(c){const r=pen(head);if(!r)return;const [skin,shadow,highlight
  }
  if(c.accessory==='earring'){r(left-2,47,2,5,'#d9b669');r(left+width,47,2,5,'#d9b669');}
 }
-function syncControls(){for(const key of Object.keys(choices)){const field=$(`look-${key}`);if(field)field.value=config[key];}$('lookLock').checked=!!override;$('lookStatus').textContent=override?'이 조합을 모든 신청자에게 적용 중':'신청자마다 다른 외형을 자동 조합 중';}
-function render(){drawBody(config);drawHead(config);rig.dataset.look=JSON.stringify(config);rig.setAttribute('aria-label',`${choices.hair.find(([v])=>v===config.hair)[1]}, ${choices.outfit.find(([v])=>v===config.outfit)[1]} 차림의 방문자`);syncControls();}
-function saveOverride(){try{if(override)localStorage.setItem('java-inspector:look:v1',JSON.stringify(override));else localStorage.removeItem('java-inspector:look:v1');}catch{$('lookStatus').textContent='외형 저장을 사용할 수 없어. 현재 탭에서는 계속 적용돼.';}}
+function render(){drawBody(config);drawHead(config);rig.dataset.look=JSON.stringify(config);rig.setAttribute('aria-label',`${choices.hair.find(([v])=>v===config.hair)[1]}, ${choices.outfit.find(([v])=>v===config.outfit)[1]} 차림의 방문자`);}
 function setVisitor(nextIdentity,nextSeed,{nod=false}={}){
- const nextKey=`${nextSeed}:${nextIdentity}`,changed=currentKey!==nextKey;identity=nextIdentity;seed=nextSeed;currentKey=nextKey;config=override||createConfig(seed,identity);render();
+ const nextKey=`${nextSeed}:${nextIdentity}`,changed=currentKey!==nextKey;currentKey=nextKey;config=createConfig(nextSeed,nextIdentity);render();
  if(changed){rig.classList.remove('is-entering','is-nodding');void rig.offsetWidth;rig.classList.add('is-entering');}
  else if(nod){rig.classList.remove('is-nodding');void rig.offsetWidth;rig.classList.add('is-nodding');}
 }
-for(const [key,values] of Object.entries(choices)){
- const label=document.createElement('label');label.textContent=labels[key];const select=document.createElement('select');select.id=`look-${key}`;
- for(const [value,name] of values){const option=document.createElement('option');option.value=value;option.textContent=name;select.append(option);}label.append(select);$('lookFields').append(label);
- select.addEventListener('change',()=>{config={...config,[key]:select.value};override={...config};render();saveOverride();});
-}
-$('randomLook').onclick=()=>{config=createConfig(++appearanceSeed,'preview');override={...config};render();saveOverride();};
-$('lookLock').onchange=e=>{override=e.target.checked?{...config}:null;config=override||createConfig(seed,identity);render();saveOverride();};
-$('autoLook').onclick=()=>{override=null;config=createConfig(seed,identity);render();saveOverride();};
 document.addEventListener('visibilitychange',()=>rig.classList.toggle('is-paused',document.hidden));
 document.querySelector('.scene').classList.add('has-visitor');
 window.JavaVisitor={createConfig,normalizeConfig,setVisitor};render();

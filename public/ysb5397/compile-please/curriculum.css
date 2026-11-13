@@ -1,0 +1,15 @@
+/* Eleven topics remain readable on narrow screens. */
+.topic-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.topic-option{padding:11px 12px;gap:8px;min-width:0}.topic-option strong{font-size:13px}.topic-option small{line-height:1.6;font-size:10px}.topic-option input{right:9px}.topic-index{font-size:12px}
+.welcome{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:36px;padding:34px}
+.rule-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.rule-tabs button{border-bottom:1px solid #617353;padding:9px 5px;overflow-wrap:anywhere}
+.rule-text{white-space:pre-line}.rule-target .rule-text{line-height:1.95}
+.rule-target .rule-title>span{font-size:10px}
+.handbook-open{width:100%;margin-top:18px;min-height:44px;background:#3d4f36;color:#e0e6cb;border:1px solid #95a780;padding:12px;font:inherit;cursor:pointer}
+.handbook-dialog{width:min(760px,calc(100% - 24px));max-height:calc(100dvh - 32px);overflow:auto;background:#303d32;color:#e0e4cd;border:2px solid #95a780;padding:26px;font-family:var(--sans);line-height:1.9}
+.handbook-dialog::backdrop{background:#101c16cc}.handbook-heading{display:flex;justify-content:space-between;align-items:center;gap:16px}.handbook-heading h2{font-size:23px;margin:5px 0}.handbook-heading button{min-height:44px;cursor:pointer;white-space:nowrap}.handbook-intro{font-size:14px;color:#c9d4bb}
+.reading-guide{padding:15px;border:1px solid #768668;background:#263629;font-size:13px}.reading-guide summary{cursor:pointer;font-weight:bold}.reading-guide p{margin:12px 0 0}
+.handbook-topic-label{display:block;margin:22px 0 6px;font-size:13px}.handbook-dialog select{width:100%;padding:12px;background:#e4dfc7;color:#323a32;border:1px solid #b9c49f;font:inherit}.handbook-content article{border-bottom:1px dashed #718361;padding:14px 0}.handbook-content h3{font-size:16px;margin:0 0 8px}.handbook-content p{font-size:14px;margin:0;color:#c5d2b6}
+.case-kind{display:inline-block;font-size:11px;padding:5px 8px;border:1px solid #879474;margin:0 0 10px;color:#59684c}.curriculum-note{font-size:12px;line-height:1.9;color:#becbb0}
+@media(max-width:850px){.welcome{grid-template-columns:1fr;gap:24px}.welcome-copy h1 br{display:none}.topic-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.welcome{padding:24px 18px}.topic-options{grid-template-columns:1fr}.handbook-dialog{padding:18px}.handbook-heading h2{font-size:19px}.rule-tabs button{font-size:10px}}
