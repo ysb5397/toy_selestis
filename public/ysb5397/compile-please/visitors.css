@@ -1,0 +1,30 @@
+.scene.has-visitor canvas#scene{visibility:hidden}
+.scene.has-visitor{background:#55624e url('assets/bureau-day-v1.png') center 57% / cover no-repeat}
+.scene.has-visitor .scene-sign,.scene.has-visitor .booth-sign{z-index:3}
+.scene.has-visitor .speech{z-index:4;left:61%;max-width:30%}
+
+.visitor-rig{position:absolute;left:50%;bottom:0;width:192px;height:224px;margin-left:-96px;z-index:2;pointer-events:none;transform-origin:50% 100%;isolation:isolate}
+.visitor-body-motion,.visitor-head-motion{position:absolute;inset:0;transform-origin:50% 57%;animation:visitor-breathe 3.6s steps(6,end) infinite}
+.visitor-head-motion{animation-name:visitor-head-breathe}
+.visitor-rig canvas{position:absolute;inset:0;width:192px;height:224px;image-rendering:pixelated;object-fit:contain}
+.visitor-rig.is-entering{animation:visitor-enter .42s steps(8,end) both}
+.visitor-rig.is-nodding .visitor-head-motion{animation:visitor-nod .52s steps(7,end) both,visitor-head-breathe 3.6s steps(6,end) .52s infinite}
+.visitor-rig.is-paused,.visitor-rig.is-paused *{animation-play-state:paused!important}
+.look-lab{background:#2c382b;border-bottom:1px solid #607052;color:#c9d4bc}
+.look-lab summary{cursor:pointer;padding:13px 24px;font-size:12px;min-height:44px}
+.look-lab summary span{font-size:10px;color:#99ac89;margin-left:12px}
+.look-content{padding:2px 24px 20px}
+.look-content>p{font-size:12px;line-height:1.8;color:#b0c09c;margin:0 0 16px}
+.look-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.look-fields label{font-size:11px;color:#aebf9c;display:flex;flex-direction:column;gap:6px}
+.look-fields select{background:#223022;border:1px solid #667b54;color:#d4dfc7;font:12px var(--sans);padding:9px;width:100%;min-height:40px}
+.look-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px}
+.look-actions button{background:#4b5f3e;border:1px solid #94aa7b;color:#e3ead7;padding:10px 14px;font-size:12px;min-height:42px}
+.look-actions label{font-size:12px;display:flex;align-items:center;gap:7px}.look-actions input{accent-color:#c6d5a9;width:16px;height:16px}
+#lookStatus{font-size:11px;color:#adbd9a;margin-top:12px}
+@keyframes visitor-enter{from{transform:translateX(70px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes visitor-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@keyframes visitor-head-breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes visitor-nod{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(3px) rotate(3deg)}}
+@media(max-width:640px){.visitor-rig{width:144px;height:168px;margin-left:-72px;left:48%}.visitor-rig canvas{width:144px;height:168px}.scene.has-visitor .speech{left:65%;max-width:32%;top:53px;padding:9px;font-size:10px}.look-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.look-content{padding:0 16px 18px}.look-lab summary{padding:13px 16px}.look-lab summary span{display:none}.look-actions{gap:8px}.look-actions label{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.visitor-rig,.visitor-rig *{animation:none!important;transform:none!important}}

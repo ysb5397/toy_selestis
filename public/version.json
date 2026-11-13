@@ -1,13 +1,19 @@
 {
-  "release": "a6ffd6c110857d584750",
+  "release": "43cb87880728791d6183",
   "pages": {
-    "/ggm/prac_circuit": {
-      "schema": 1
-    },
-    "/ggm/prac_sequence": {
-      "schema": 1
-    },
     "/": {
+      "schema": 1
+    },
+    "/kgm/prac_circuit": {
+      "schema": 1
+    },
+    "/kgm/prac_sequence": {
+      "schema": 1
+    },
+    "/ysb5397/compile-please": {
+      "schema": 1
+    },
+    "/ysb5397/love-maker": {
       "schema": 1
     },
     "/ysb5397/pick_o": {

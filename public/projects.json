@@ -2,24 +2,54 @@
   "version": 1,
   "projects": [
     {
-      "id": "ggm/prac_circuit.html",
-      "url": "/ggm/prac_circuit",
+      "id": "kgm/prac_circuit.html",
+      "url": "/kgm/prac_circuit",
       "title": "회로 실험실",
       "description": "스위치를 눌러 논리 게이트 회로의 입력과 출력을 확인하는 실험실.",
-      "author": "ggm",
+      "author": "kgm",
       "tags": [],
       "cover": "circuit",
       "category": "회로 실습"
     },
     {
-      "id": "ggm/prac_sequence.html",
-      "url": "/ggm/prac_sequence",
+      "id": "kgm/prac_sequence.html",
+      "url": "/kgm/prac_sequence",
       "title": "시퀀스 회로 실험실",
       "description": "두 전원선 사이의 세로형 시퀀스 회로에서 푸시버튼, 릴레이, 자기유지와 인터록을 연습해 봐.",
-      "author": "ggm",
+      "author": "kgm",
       "tags": [],
       "cover": "sequence",
       "category": "회로 실습"
+    },
+    {
+      "id": "ysb5397/compile-please/index.html",
+      "url": "/ysb5397/compile-please/",
+      "title": "코드 심사국",
+      "description": "자바 코드와 실행 결과를 대조하고 승인 도장을 찍어 봐. 자료형·연산, 조건문·반복문, 클래스·객체를 골라 배우는 픽셀풍 서류 심사 게임.",
+      "author": "ysb5397",
+      "tags": [
+        "Java",
+        "학습",
+        "픽셀",
+        "게임"
+      ],
+      "cover": "code",
+      "category": "게임"
+    },
+    {
+      "id": "ysb5397/love-maker/index.html",
+      "url": "/ysb5397/love-maker/",
+      "title": "love-maker — 랜덤 애인 만들기",
+      "description": "위에서 아래로 흐르는 세로 릴로 12가지 랜덤 애인 조건을 하나씩 공개해요.",
+      "author": "ysb5397",
+      "tags": [
+        "랜덤",
+        "애인 만들기",
+        "필터 게임",
+        "love-maker"
+      ],
+      "cover": "code",
+      "category": "게임"
     },
     {
       "id": "ysb5397/pick_o.html",

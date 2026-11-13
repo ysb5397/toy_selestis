@@ -1,0 +1,39 @@
+/* Image stamp kit. Keep the code, claim, and decision controls readable. */
+.signature-area{margin-top:20px;border-top:1px dashed #a3a88b;padding-top:12px}
+.signature-label{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#778064}
+.signature-slot{min-height:132px;display:grid;place-items:center;position:relative;margin-top:8px;border:1px dashed #b3b69b;background:#dedcc44d}
+.stamp-placeholder{font-size:11px;color:#90967b;text-align:center;padding:12px}
+.signature-slot .stamp{position:static;inset:auto;border:0;background:none;transform:none;padding:0;letter-spacing:0;width:192px;height:120px;display:grid;place-items:center;animation:ink-press .28s steps(3,end) both}
+.stamp img{display:none;width:192px;height:120px;object-fit:contain;image-rendering:pixelated}
+.stamp.asset-ready img{display:block}.stamp.asset-ready .stamp-fallback{display:none}
+.stamp-fallback{font-size:30px;letter-spacing:6px;padding:10px 20px;border:5px double currentColor;font-weight:bold}
+.stamp.bad .stamp-fallback{clip-path:polygon(8% 0,92% 0,100% 15%,100% 85%,92% 100%,8% 100%,0 85%,0 15%)}
+.decision .eyebrow{font-size:9px;color:#b8b38e;margin-bottom:10px}
+.tray-note{display:block;color:#99a88d;font-size:10px;margin-top:12px}
+.stamp-buttons{gap:16px;align-items:stretch}
+.stamp-buttons button{display:flex;flex-direction:column;align-items:center;gap:9px;min-width:120px;padding:12px 14px 13px;background:#273127;border:1px solid #637157;box-shadow:3px 3px #1b241c;transform:none;font-size:17px;letter-spacing:3px;transition:background .12s,border-color .12s}
+.stamp-buttons .deny{border-bottom:4px solid #a96750}.stamp-buttons .approve{border-bottom:4px solid #86a674}
+.tool-visual{display:none;position:relative;width:112px;height:112px;transition:transform .12s steps(3,end);transform-origin:50% 100%;pointer-events:none}
+.tool-visual.asset-ready{display:block}.tool-visual img{width:112px;height:112px;object-fit:contain;image-rendering:pixelated;display:block}
+.tool-plaque{position:absolute;bottom:15%;left:23%;width:54%;text-align:center;font-size:11px;line-height:17px;letter-spacing:3px;font-weight:bold;color:#eee5c6;background:#355d4b}
+.deny .tool-plaque{background:#853c30;clip-path:polygon(8% 0,92% 0,100% 20%,100% 80%,92% 100%,8% 100%,0 80%,0 20%)}
+.tool-label{font-size:16px;line-height:1.5}.tool-label kbd{margin-left:4px}
+.stamp-buttons button:hover:not(:disabled){background:#3c4936;border-color:#b0ba8c}
+.stamp-buttons button:hover:not(:disabled) .tool-visual{transform:translateY(-4px)}
+.stamp-buttons button:active:not(:disabled) .tool-visual,.stamp-buttons button.is-selected .tool-visual{transform:translateY(6px) scaleY(.94)}
+.stamp-buttons button:disabled{opacity:.5;cursor:default}.stamp-buttons button.is-selected{opacity:1;background:#414a34;border-color:#aab68c;box-shadow:inset 0 0 0 1px #aab68c44}
+.stamp-buttons button.is-selected .tool-label:after{content:' · 날인';font-size:10px;letter-spacing:0;color:#d1d9be}
+.decision:has(.is-selected) .tray-note{visibility:hidden}
+.signature-slot .stamp{animation-delay:0s}
+.feedback{animation:review-reveal .22s ease-out both}
+.stamp-flight{position:fixed;width:112px;height:112px;z-index:1000;pointer-events:none;transform-origin:50% 95%;will-change:transform,opacity;contain:layout style}
+.stamp-flight .tool-visual{display:block;width:112px;height:112px;transform:none!important;transition:none}
+.stamp-flight .tool-visual img{width:112px;height:112px}
+.stamp-flight .tool-plaque{font-size:11px;line-height:17px}
+.signature-slot.is-impact:after{content:'';position:absolute;inset:8px;border:2px solid #8d9670;pointer-events:none;animation:stamp-impact .24s steps(3,end) both}
+@keyframes stamp-impact{0%{opacity:.6;transform:scale(.96)}100%{opacity:0;transform:scale(1.04)}}
+@keyframes ink-press{0%{opacity:0;transform:translateY(-10px) scale(1.08)}65%{opacity:1;transform:translateY(2px) scale(.98)}100%{opacity:1;transform:none}}
+@keyframes review-reveal{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(max-width:850px){.stamp-buttons{justify-content:center}.stamp-buttons button{flex:1;min-width:0;max-width:180px}.decision{align-items:stretch}.decision>div:first-child{max-width:none}}
+@media(max-width:640px){.tool-visual,.tool-visual img{width:96px;height:96px}.tool-plaque{font-size:10px;line-height:14px}.stamp-buttons{gap:12px}.stamp-buttons button{padding:10px 12px;min-width:0;max-width:none}.tool-label{font-size:16px}.decision{padding:16px}.tray-note{display:none}.signature-slot{min-height:126px}.feedback{margin-top:0}}
+@media(prefers-reduced-motion:reduce){.tool-visual,.stamp-buttons button{transition:none!important}.stamp-buttons button.is-selected .tool-visual,.stamp-buttons button:hover:not(:disabled) .tool-visual{transform:none}.signature-slot .stamp,.feedback,.signature-slot.is-impact:after{animation:none!important}.stamp-flight{display:none}}
